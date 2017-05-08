@@ -23,11 +23,14 @@ if __name__ == "__main__":
 	texture = mt.model_texture(loader.load_texture("chicken"))
 	textured_model = tm.textured_model(model, texture)
 	
-	entity = e.entity(textured_model, (-1, 0, 0), 0, 0, 0, 1)
+	entity = e.entity(textured_model, (0, 0, 0), 0, 0, 0, 1)
 	
 	while gameRunning == True:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
+		
+		entity.increase_position(0.002, 0.0, 0.0)
+		entity.increase_rotation(0.0, 1.0, 0.0)
 		renderer.prepare()
 		shader.start()
 		renderer.render(entity, shader)

@@ -29,14 +29,16 @@ if __name__ == "__main__":
 	
 	data = o.obj_file_loader().load_obj("data\\models\\res\\dragon.obj")
 	test = loader.load_to_vao(data.get_vertices(), data.get_texture_coordinates(), data.get_normals(), data.get_indices())
-	test_texture = mt.model_texture(loader.load_texture("green"))
+	test_texture = mt.model_texture(loader.load_texture("light_blue"))
 	textured_test = tm.textured_model(test, test_texture)
+	mo_test = textured_test.get_texture()
+	mo_test.set_shine_damper(10)
+	mo_test.set_reflectivity(1)
 	test_entity = e.entity(textured_test, (0, 0, -25), 0, 0, 0, 1)
 	
 	model = loader.load_to_vao(vertices, texture_coords, normals, indices)
 	texture = mt.model_texture(loader.load_texture("balloons"))
 	textured_model = tm.textured_model(model, texture)
-	
 	entity = e.entity(textured_model, (0, 0, -15), 0, 0, 0, 1)
 	
 	light = li.light((0, 0, -20.0), (1.0, 1.0, 1.0))

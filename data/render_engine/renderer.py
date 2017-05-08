@@ -24,6 +24,7 @@ class renderer():
 		glEnableVertexAttribArray(2)
 		transformation_matrix = m.maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
 		shader.load_transformation_matrix(transformation_matrix)
+		shader.load_shine_variables(textured_model.texture.get_shine_damper(), textured_model.texture.get_reflectivity())
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, textured_model.texture.get_texture_id())	
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, textured_model.texture.get_texture_data())

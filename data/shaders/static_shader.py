@@ -16,6 +16,11 @@ class static_shader(sp.shader_program):
 		self.location_view_matrix = super(static_shader, self).get_uniform_location("view_matrix")
 		self.location_light_position = super(static_shader, self).get_uniform_location("light_position")
 		self.location_light_color = super(static_shader, self).get_uniform_location("light_color")
+		self.location_shine_damper = super(static_shader, self).get_uniform_location("shine_damper")
+		self.location_reflectivity = super(static_shader, self).get_uniform_location("reflectivity")
+	def load_shine_variables(self, shine_damper, reflectivity):
+		super(static_shader, self).load_float(self.location_shine_damper, shine_damper)
+		super(static_shader, self).load_float(self.location_reflectivity, reflectivity)
 	def load_transformation_matrix(self, matrix):
 		super(static_shader, self).load_matrix(self.location_transformation_matrix, matrix)
 	def load_projection_matrix(self, matrix):

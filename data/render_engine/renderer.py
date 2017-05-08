@@ -1,7 +1,16 @@
 from OpenGL.GL import *
 import data.tools.maths as m
+import pygame, numpy
 
 class renderer():
+	FIELD_OF_VIEW = 70.0
+	NEAR_PLANE = 0.1
+	FAR_PLANE = 1000.0
+	def __init__(self, shader, display):
+		projection_matrix = self.create_projection_matrix(display)
+		shader.start()
+		shader.load_projection_matrix(projection_matrix)
+		shader.stop()
 	def prepare(self):
 		glClear(GL_COLOR_BUFFER_BIT)
 		glClearColor(0.125, 0.698, 0.667, 1)
@@ -23,3 +32,16 @@ class renderer():
 		glDisableVertexAttribArray(0)
 		glDisableVertexAttribArray(1)
 		glBindVertexArray(0)
+	def create_projection_matrix(self, display):
+		aspect_ratio = float(display.get_width()) / float(display.get_height())
+		y_scale = float((1.0 / (numpy.tan(numpy.radians(self.FIELD_OF_VIEW / 2.0)))) * aspect_ratio)
+		x_scale = float(float(y_scale) / float(aspect_ratio))
+		frustum_length = float(self.FAR_PLANE - self.NEAR_PLANE)
+		projection_matrix = numpy.zeros((4, 4), dtype = "float32")
+		projection_matrix[0][0] = x_scale
+		projection_matrix[1][1] = y_scale
+		projection_matrix[2][2] = -((self.FAR_PLANE + self.NEAR_PLANE) / frustum_length)
+		projection_matrix[2][3] = -1
+		projection_matrix[3][2] = -((2.0 * self.FAR_PLANE * self.NEAR_PLANE) / frustum_length)
+		projection_matrix[3][3] = 0
+		return projection_matrix

@@ -10,5 +10,8 @@ class static_shader(sp.shader_program):
 		super(static_shader, self).bind_attribute(1, "texture_coords")
 	def get_all_uniform_locations(self):
 		self.location_transformation_matrix = super(static_shader, self).get_uniform_location("transformation_matrix")
+		self.location_projection_matrix = super(static_shader, self).get_uniform_location("projection_matrix")
 	def load_transformation_matrix(self, matrix):
 		super(static_shader, self).load_matrix(self.location_transformation_matrix, matrix)
+	def load_projection_matrix(self, matrix):
+		super(static_shader, self).load_matrix(self.location_projection_matrix, matrix)

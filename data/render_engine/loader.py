@@ -17,7 +17,9 @@ class loader():
 		texture = "data\\textures\\res\\" + file_name + ".png"
 		texture_data = pygame.image.tostring(pygame.image.load(texture), "RGBA", True)
 		texture_id = glGenTextures(1)
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, None)
+		glActiveTexture(GL_TEXTURE0)
+		glBindTexture(GL_TEXTURE_2D, texture_id)	
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
 		self.textures.append(texture_id)
 		return texture_id, texture_data
 	def clean_up(self):

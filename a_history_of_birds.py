@@ -2,6 +2,7 @@ import pygame, numpy
 import data.render_engine.display_manager as display
 import data.render_engine.loader as l
 import data.render_engine.renderer as r
+import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.shaders.static_shader as ss
 import data.textures.model_texture as mt
@@ -24,7 +25,13 @@ if __name__ == "__main__":
 	loader = l.loader()
 	shader = ss.static_shader()
 	renderer = r.renderer(shader, display.screen)
-
+	
+	data = o.obj_file_loader().load_obj("data\\textures\\res\\stall.obj")
+	test = loader.load_to_vao(data.get_vertices(), data.get_texture_coordinates(), data.get_indices())
+	test_texture = mt.model_texture(loader.load_texture("stall_texture"))
+	textured_test = tm.textured_model(test, test_texture)
+	test_entity = e.entity(textured_test, (0, 0, -10), 0, 0, 0, 1)
+	
 	model = loader.load_to_vao(vertices, texture_coords, indices)
 	texture = mt.model_texture(loader.load_texture("balloons"))
 	textured_model = tm.textured_model(model, texture)
@@ -38,11 +45,13 @@ if __name__ == "__main__":
 		
 		entity.increase_position(0.002, 0.0, -0.002)
 		entity.increase_rotation(1.0, 1.0, 0.0)
+		test_entity.increase_rotation(0.0, 1.0, 0.0)
 		camera.move()
 		renderer.prepare()
 		shader.start()
 		shader.load_view_matrix(camera)
 		renderer.render(entity, shader)
+		renderer.render(test_entity, shader)
 		shader.stop()
 		display.update_display()
 		for event in pygame.event.get():

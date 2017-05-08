@@ -12,7 +12,8 @@ class renderer():
 		shader.load_projection_matrix(projection_matrix)
 		shader.stop()
 	def prepare(self):
-		glClear(GL_COLOR_BUFFER_BIT)
+		glEnable(GL_DEPTH_TEST)
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		glClearColor(0.125, 0.698, 0.667, 1)
 	def render(self, entity, shader):
 		textured_model = entity.get_model()

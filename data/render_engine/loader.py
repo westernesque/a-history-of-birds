@@ -6,11 +6,12 @@ class loader():
 	vaos = []
 	vbos = []
 	textures = []
-	def load_to_vao(self, positions, texture_coords, indices):
+	def load_to_vao(self, positions, texture_coords, normals, indices):
 		vao_id = self.create_vao()
 		self.bind_indices_buffer(indices)
 		self.store_data_in_attribute_list(0, 3, positions)
 		self.store_data_in_attribute_list(1, 2, texture_coords)
+		self.store_data_in_attribute_list(2, 3, normals)
 		self.unbind_vao()
 		return rm.raw_model(vao_id, len(indices))
 	def load_texture(self, file_name):

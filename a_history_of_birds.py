@@ -2,6 +2,7 @@ import pygame, numpy
 import data.render_engine.display_manager as display
 import data.render_engine.loader as l
 import data.render_engine.renderer as r
+import data.render_engine.light as li
 import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.shaders.static_shader as ss
@@ -16,7 +17,7 @@ import data.entities.entity as e
 vertices = numpy.array([-0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5 , -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5,  -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5], dtype = "float32")
 texture_coords = numpy.array([0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1], dtype = "float32")
 indices = numpy.array([0, 1, 3, 3, 1, 2, 4, 5, 7, 7, 5, 6, 8, 9, 11, 11, 9, 10, 12, 13, 15, 15, 13, 14, 16, 17, 19, 19, 17, 18, 20, 21, 23, 23, 21, 22], dtype = "int32")
-
+normals = numpy.array([0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0], dtype = "float32")
 
 if __name__ == "__main__":
 	gameRunning = True
@@ -26,17 +27,19 @@ if __name__ == "__main__":
 	shader = ss.static_shader()
 	renderer = r.renderer(shader, display.screen)
 	
-	data = o.obj_file_loader().load_obj("data\\textures\\res\\stall.obj")
-	test = loader.load_to_vao(data.get_vertices(), data.get_texture_coordinates(), data.get_indices())
-	test_texture = mt.model_texture(loader.load_texture("stall_texture"))
+	data = o.obj_file_loader().load_obj("data\\models\\res\\dragon.obj")
+	test = loader.load_to_vao(data.get_vertices(), data.get_texture_coordinates(), data.get_normals(), data.get_indices())
+	test_texture = mt.model_texture(loader.load_texture("green"))
 	textured_test = tm.textured_model(test, test_texture)
-	test_entity = e.entity(textured_test, (0, 0, -10), 0, 0, 0, 1)
+	test_entity = e.entity(textured_test, (0, 0, -25), 0, 0, 0, 1)
 	
-	model = loader.load_to_vao(vertices, texture_coords, indices)
+	model = loader.load_to_vao(vertices, texture_coords, normals, indices)
 	texture = mt.model_texture(loader.load_texture("balloons"))
 	textured_model = tm.textured_model(model, texture)
 	
-	entity = e.entity(textured_model, (0, 0, -5), 0, 0, 0, 1)
+	entity = e.entity(textured_model, (0, 0, -15), 0, 0, 0, 1)
+	
+	light = li.light((0, 0, -20.0), (1.0, 1.0, 1.0))
 	camera = c.camera()
 	
 	while gameRunning == True:
@@ -49,6 +52,7 @@ if __name__ == "__main__":
 		camera.move()
 		renderer.prepare()
 		shader.start()
+		shader.load_light(light)
 		shader.load_view_matrix(camera)
 		renderer.render(entity, shader)
 		renderer.render(test_entity, shader)

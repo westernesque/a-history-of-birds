@@ -21,6 +21,7 @@ class renderer():
 		glBindVertexArray(raw_model.get_vao_id())
 		glEnableVertexAttribArray(0)
 		glEnableVertexAttribArray(1)
+		glEnableVertexAttribArray(2)
 		transformation_matrix = m.maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
 		shader.load_transformation_matrix(transformation_matrix)
 		glActiveTexture(GL_TEXTURE0)
@@ -32,6 +33,7 @@ class renderer():
 		glDrawElements(GL_TRIANGLES, raw_model.get_vertex_count(), GL_UNSIGNED_INT, None)
 		glDisableVertexAttribArray(0)
 		glDisableVertexAttribArray(1)
+		glDisableVertexAttribArray(2)
 		glBindVertexArray(0)
 	def create_projection_matrix(self, display):
 		aspect_ratio = float(display.get_width()) / float(display.get_height())

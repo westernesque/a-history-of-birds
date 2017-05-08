@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from OpenGL.GL import *
+import numpy
 
 class shader_program(object):
 	__metaclass__ = ABCMeta
@@ -9,11 +10,17 @@ class shader_program(object):
 		self.program_id = glCreateProgram()
 		glAttachShader(self.program_id, self.vertex_shader_id)
 		glAttachShader(self.program_id, self.fragment_shader_id)
-		self.bind_all_attributes
+		self.bind_all_attributes()
 		glLinkProgram(self.program_id)
 		glValidateProgram(self.program_id)
+		self.get_all_uniform_locations()
+	def get_uniform_location(self, uniform_name):
+		return glGetUniformLocation(self.program_id, uniform_name)
 	@abstractmethod
-	def bind_all_attributes():
+	def get_all_uniform_locations(self):
+		pass
+	@abstractmethod
+	def bind_all_attributes(self):
 		pass
 	def start(self):
 		glUseProgram(self.program_id)
@@ -28,6 +35,18 @@ class shader_program(object):
 		glDeleteProgram(self.program_id)
 	def bind_attribute(self, attribute, variable_name):
 		glBindAttribLocation(self.program_id, attribute, variable_name)
+	def load_float(self, location, value):
+		glUniform1f(location, value)
+	def load_vector(self, location, vector):
+		glUniform3f(location, vector[0], vector[1], vector[2])
+	def load_boolean(self, location, value):
+		to_load = 0
+		if value == True:
+			to_load = 1
+		glUniform1f(location, to_load)
+	def load_matrix(self, location, matrix):
+		matrix_buffer = numpy.array(matrix, dtype = "float32")
+		glUniformMatrix4fv(location, 1, GL_FALSE, matrix_buffer)	
 	def load_shader(self, file, type):
 		shader_file = open((file), "r")
 		shader_file_data = shader_file.readlines()

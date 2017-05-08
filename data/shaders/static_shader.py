@@ -7,3 +7,4 @@ class static_shader(sp.shader_program):
 		super(static_shader, self).__init__(self.VERTEX_FILE, self.FRAGMENT_FILE)
 	def bind_all_attributes():
 		super(static_shader, self).bind_attribute(0, "position")
+		super(static_shader, self).bind_attribute(1, "texture_coords")

@@ -41,6 +41,8 @@ class master_renderer():
 		del self.terrains[:]
 		self.entities.clear()
 	def prepare(self):
+		glEnable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 		glEnable(GL_DEPTH_TEST)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		glClearColor(self.RED, self.GREEN, self.BLUE, 1)

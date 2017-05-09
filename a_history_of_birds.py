@@ -9,6 +9,8 @@ import data.shaders.static_shader as ss
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
 import data.terrains.terrain as t
+import data.textures.terrain_texture as tt
+import data.textures.terrain_texture_pack as ttp
 import data.entities.entity as e
 
 # vertices = numpy.array([-0.5, 0.5, 0, -0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0], dtype = "float32")
@@ -48,7 +50,16 @@ if __name__ == "__main__":
 		entity_list.append(e.entity(textured_cube, (x, y, z), rx, ry, 0, 1))
 		bush_list.append(e.entity(textured_bush, (x, 0, z), 0, ry, 0, 1))
 	
-	terrain = t.terrain(-0.5, -0.5, loader, loader.load_texture("leaf"))
+	t_background_texture = tt.terrain_texture(loader.load_texture("leaf"))
+	t_r_texture = tt.terrain_texture(loader.load_texture("dirt"))
+	t_g_texture = tt.terrain_texture(loader.load_texture("hmm"))
+	t_b_texture = tt.terrain_texture(loader.load_texture("cobblestone"))
+	
+	t_terrain_texture_pack = ttp.terrain_texture_pack(t_background_texture, t_r_texture, t_g_texture, t_b_texture)
+	
+	t_blend_map = tt.terrain_texture(loader.load_texture("blend_map"))
+	
+	terrain = t.terrain(-0.5, -0.5, loader, t_terrain_texture_pack, t_blend_map)
 	
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = c.camera()

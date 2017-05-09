@@ -14,6 +14,8 @@ class camera():
 			self.position[2] -= 0.2
 		if keys[pygame.K_s] == True and keys[pygame.K_LSHIFT] == False:
 			self.position[2] += 0.2
+		if keys[pygame.K_s] == True and keys[pygame.K_SPACE] == True:
+			self.position[2] += 1.0
 		if keys[pygame.K_a] == True and keys[pygame.K_LSHIFT] == False:
 			self.position[0] -= 0.2
 		if keys[pygame.K_d] == True and keys[pygame.K_LSHIFT] == False:

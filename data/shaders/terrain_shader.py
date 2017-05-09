@@ -19,6 +19,11 @@ class terrain_shader(sp.shader_program):
 		self.location_shine_damper = super(terrain_shader, self).get_uniform_location("shine_damper")
 		self.location_reflectivity = super(terrain_shader, self).get_uniform_location("reflectivity")
 		self.location_sky_color = super(terrain_shader, self).get_uniform_location("sky_color")
+		self.location_background_texture = super(terrain_shader, self).get_uniform_location("background_texture")
+		self.location_r_texture = super(terrain_shader, self).get_uniform_location("r_texture")
+		self.location_g_texture = super(terrain_shader, self).get_uniform_location("g_texture")
+		self.location_b_texture = super(terrain_shader, self).get_uniform_location("b_texture")
+		self.location_blend_map = super(terrain_shader, self).get_uniform_location("blend_map")
 	def load_shine_variables(self, shine_damper, reflectivity):
 		super(terrain_shader, self).load_float(self.location_shine_damper, shine_damper)
 		super(terrain_shader, self).load_float(self.location_reflectivity, reflectivity)
@@ -34,3 +39,9 @@ class terrain_shader(sp.shader_program):
 		super(terrain_shader, self).load_vector(self.location_light_color, light.get_color())
 	def load_sky_color(self, red, green, blue):
 		super(terrain_shader, self).load_vector(self.location_sky_color, (red, green, blue))
+	def connect_texture_units(self):
+		super(terrain_shader, self).load_int(self.location_background_texture, 0)
+		super(terrain_shader, self).load_int(self.location_r_texture, 1)
+		super(terrain_shader, self).load_int(self.location_g_texture, 2)
+		super(terrain_shader, self).load_int(self.location_b_texture, 3)
+		super(terrain_shader, self).load_int(self.location_blend_map, 4)

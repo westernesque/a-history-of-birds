@@ -37,6 +37,8 @@ class shader_program(object):
 		glBindAttribLocation(self.program_id, attribute, variable_name)
 	def load_float(self, location, value):
 		glUniform1f(location, value)
+	def load_int(self, location, value):
+		glUniform1i(location, value)
 	def load_vector(self, location, vector):
 		glUniform3f(location, vector[0], vector[1], vector[2])
 	def load_boolean(self, location, value):

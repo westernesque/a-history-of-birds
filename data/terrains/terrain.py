@@ -11,7 +11,6 @@ class terrain():
 		self.position_x = position_x * self.SIZE
 		self.position_z = position_z * self.SIZE
 		self.model = self.generate_terrain(loader)
-		self.textured_model = tm.textured_model(self.model, self.texture)
 	def get_texture(self):
 		return self.texture
 	def get_position_x(self):

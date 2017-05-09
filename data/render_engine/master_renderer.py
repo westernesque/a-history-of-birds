@@ -14,19 +14,24 @@ class master_renderer():
 	terrains = []
 	
 	def __init__(self, display):
-		glEnable(GL_CULL_FACE)
-		glCullFace(GL_BACK)
+		self.enable_culling()
 		self.entity_shader = ss.static_shader()
 		self.terrain_shader = ts.terrain_shader()
 		projection_matrix = self.create_projection_matrix(display)
 		self.entity_renderer = er.entity_renderer(self.entity_shader, display, projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, projection_matrix)
+	def enable_culling(self):
+		glEnable(GL_CULL_FACE)
+		glCullFace(GL_BACK)
+	def disable_culling(self):
+		glDisable(GL_CULL_FACE)
 	def render(self, light, camera):
 		self.prepare()
 		self.entity_shader.start()
 		self.entity_shader.load_light(light)
 		self.entity_shader.load_view_matrix(camera)
 		self.entity_renderer.render(self.entities)
+		self.enable_culling()
 		self.entity_shader.stop()
 		self.terrain_shader.start()
 		self.terrain_shader.load_light(light)
@@ -41,6 +46,8 @@ class master_renderer():
 		glClearColor(0.125, 0.698, 0.667, 1)
 	def process_entity(self, entity):
 		entity_model = entity.get_model()
+		if entity_model.texture.has_transparency == True:
+			self.disable_culling()
 		if entity_model in self.entities:
 			batch = self.entities[entity_model]
 			batch.append(entity)

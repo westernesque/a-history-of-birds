@@ -22,6 +22,7 @@ class entity_renderer():
 		glEnableVertexAttribArray(0)
 		glEnableVertexAttribArray(1)
 		glEnableVertexAttribArray(2)
+		self.shader.load_fake_light_variable(model.texture.get_use_fake_lighting())
 		self.shader.load_shine_variables(model.texture.get_shine_damper(), model.texture.get_reflectivity())
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, model.texture.get_texture_id())	

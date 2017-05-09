@@ -30,17 +30,23 @@ if __name__ == "__main__":
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("balloons")))
-	# textured_cube.get_texture().set_shine_damper(10)
-	# textured_cube.get_texture().set_reflectivity(1)
+
+	bush = o.obj_file_loader().load_obj("data\\models\\res\\grass_model.obj")
+	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
+	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("grass_texture")))
+	textured_bush.get_texture().set_has_transparency(True)
+	textured_bush.get_texture().set_use_fake_lighting(True)
 	
 	entity_list = []
+	bush_list = []
 	for i in range(200):
 		x = random.uniform(-50.0, 50.0)
-		y = random.uniform(-1.0, 50.0)
+		y = random.uniform(1.5, 50.0)
 		z = random.uniform(-50.0, 50.0)
 		rx = random.uniform(0.0, 180)
 		ry = random.uniform(0.0, 180)
 		entity_list.append(e.entity(textured_cube, (x, y, z), rx, ry, 0, 1))
+		bush_list.append(e.entity(textured_bush, (x, 0, z), 0, ry, 0, 1))
 	
 	terrain = t.terrain(-0.5, -0.5, loader, loader.load_texture("leaf"))
 	
@@ -58,6 +64,8 @@ if __name__ == "__main__":
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
+		for bush in bush_list:
+			renderer.process_entity(bush)
 		renderer.render(light, camera)
 		display.update_display()
 		for event in pygame.event.get():

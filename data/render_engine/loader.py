@@ -20,7 +20,7 @@ class loader():
 		texture_id = glGenTextures(1)
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, texture_id)	
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
 		self.textures.append(texture_id)
 		return texture_id, texture_data
 	def clean_up(self):

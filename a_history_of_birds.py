@@ -40,9 +40,9 @@ if __name__ == "__main__":
 	entity_list = []
 	bush_list = []
 	for i in range(200):
-		x = random.uniform(-50.0, 50.0)
-		y = random.uniform(1.5, 50.0)
-		z = random.uniform(-50.0, 50.0)
+		x = random.uniform(-50.0, 100.0)
+		y = random.uniform(1.5, 100.0)
+		z = random.uniform(-50.0, 100.0)
 		rx = random.uniform(0.0, 180)
 		ry = random.uniform(0.0, 180)
 		entity_list.append(e.entity(textured_cube, (x, y, z), rx, ry, 0, 1))

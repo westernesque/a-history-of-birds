@@ -10,6 +10,10 @@ class master_renderer():
 	NEAR_PLANE = 0.1
 	FAR_PLANE = 1000.0
 	
+	RED = 0.125
+	GREEN = 0.698
+	BLUE = 0.667
+	
 	entities = {}
 	terrains = []
 	
@@ -20,20 +24,16 @@ class master_renderer():
 		projection_matrix = self.create_projection_matrix(display)
 		self.entity_renderer = er.entity_renderer(self.entity_shader, display, projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, projection_matrix)
-	def enable_culling(self):
-		glEnable(GL_CULL_FACE)
-		glCullFace(GL_BACK)
-	def disable_culling(self):
-		glDisable(GL_CULL_FACE)
 	def render(self, light, camera):
 		self.prepare()
 		self.entity_shader.start()
+		self.entity_shader.load_sky_color(self.RED, self.GREEN, self.BLUE)
 		self.entity_shader.load_light(light)
 		self.entity_shader.load_view_matrix(camera)
 		self.entity_renderer.render(self.entities)
-		self.enable_culling()
 		self.entity_shader.stop()
 		self.terrain_shader.start()
+		self.terrain_shader.load_sky_color(self.RED, self.GREEN, self.BLUE)
 		self.terrain_shader.load_light(light)
 		self.terrain_shader.load_view_matrix(camera)
 		self.terrain_renderer.render(self.terrains)
@@ -43,11 +43,9 @@ class master_renderer():
 	def prepare(self):
 		glEnable(GL_DEPTH_TEST)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-		glClearColor(0.125, 0.698, 0.667, 1)
+		glClearColor(self.RED, self.GREEN, self.BLUE, 1)
 	def process_entity(self, entity):
 		entity_model = entity.get_model()
-		if entity_model.texture.has_transparency == True:
-			self.disable_culling()
 		if entity_model in self.entities:
 			batch = self.entities[entity_model]
 			batch.append(entity)
@@ -74,3 +72,8 @@ class master_renderer():
 		projection_matrix[3][2] = -((2.0 * self.FAR_PLANE * self.NEAR_PLANE) / frustum_length)
 		projection_matrix[3][3] = 0
 		return projection_matrix
+	def enable_culling(self):
+		glEnable(GL_CULL_FACE)
+		glCullFace(GL_BACK)
+	def disable_culling(self):
+		glDisable(GL_CULL_FACE)

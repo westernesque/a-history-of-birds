@@ -22,6 +22,8 @@ class entity_renderer():
 		glEnableVertexAttribArray(0)
 		glEnableVertexAttribArray(1)
 		glEnableVertexAttribArray(2)
+		if model.texture.get_has_transparency() == True:
+			self.disable_culling()
 		self.shader.load_fake_light_variable(model.texture.get_use_fake_lighting())
 		self.shader.load_shine_variables(model.texture.get_shine_damper(), model.texture.get_reflectivity())
 		glActiveTexture(GL_TEXTURE0)
@@ -31,6 +33,7 @@ class entity_renderer():
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 	def unbind_textured_model(self):
+		self.enable_culling()
 		glDisableVertexAttribArray(0)
 		glDisableVertexAttribArray(1)
 		glDisableVertexAttribArray(2)
@@ -38,3 +41,8 @@ class entity_renderer():
 	def prepare_entity(self, entity):
 		transformation_matrix = m.maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
 		self.shader.load_transformation_matrix(transformation_matrix)
+	def enable_culling(self):
+		glEnable(GL_CULL_FACE)
+		glCullFace(GL_BACK)
+	def disable_culling(self):
+		glDisable(GL_CULL_FACE)

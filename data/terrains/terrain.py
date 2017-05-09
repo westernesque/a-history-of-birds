@@ -1,20 +1,14 @@
 import numpy
-import data.models.textured_model as tm
 
 class terrain():
 	SIZE = 800
 	VERTEX_COUNT = 128
 	def __init__(self, position_x, position_z, loader, texture_pack, blend_map):
-		# self.texture_ = texture
-		# self.texture_id = texture[0]
-		# self.texture_data = texture[1]
 		self.terrain_texture_pack = texture_pack
 		self.blend_map = blend_map
 		self.position_x = position_x * self.SIZE
 		self.position_z = position_z * self.SIZE
 		self.model = self.generate_terrain(loader)
-	# def get_texture(self):
-		# return self.texture
 	def get_terrain_texture_pack(self):
 		return self.terrain_texture_pack
 	def get_blend_map(self):

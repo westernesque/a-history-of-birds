@@ -22,6 +22,7 @@ uniform vec3 sky_color;
 void main(void){
 	
 	vec4 blend_map_color = texture(blend_map, pass_texture_coords);
+	
 	float background_texture_amount = 1 - (blend_map_color.r + blend_map_color.g + blend_map_color.b);
 	vec2 tiled_coords = pass_texture_coords * 40.0;
 	vec4 background_texture_color = texture(background_texture, tiled_coords) * background_texture_amount;

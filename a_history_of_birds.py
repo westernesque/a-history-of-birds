@@ -1,68 +1,68 @@
-import pygame, numpy
+import pygame, numpy, random
 import data.render_engine.display_manager as display
 import data.render_engine.loader as l
-import data.render_engine.renderer as r
+import data.render_engine.master_renderer as mr
 import data.render_engine.light as li
 import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.shaders.static_shader as ss
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
+import data.terrains.terrain as t
 import data.entities.entity as e
 
 # vertices = numpy.array([-0.5, 0.5, 0, -0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0], dtype = "float32")
 # indices =  numpy.array([0,1,3,3,1,2], dtype = "int32")
 # texture_coords = numpy.array([0,1,0,0,1,0,1,1], dtype = "int32")
 
-vertices = numpy.array([-0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5 , -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5,  -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5], dtype = "float32")
-texture_coords = numpy.array([0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1], dtype = "float32")
-indices = numpy.array([0, 1, 3, 3, 1, 2, 4, 5, 7, 7, 5, 6, 8, 9, 11, 11, 9, 10, 12, 13, 15, 15, 13, 14, 16, 17, 19, 19, 17, 18, 20, 21, 23, 23, 21, 22], dtype = "int32")
-normals = numpy.array([0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0], dtype = "float32")
+# vertices = numpy.array([-0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5 , -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5,  -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5], dtype = "float32")
+# texture_coords = numpy.array([0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1], dtype = "float32")
+# indices = numpy.array([0, 1, 3, 3, 1, 2, 4, 5, 7, 7, 5, 6, 8, 9, 11, 11, 9, 10, 12, 13, 15, 15, 13, 14, 16, 17, 19, 19, 17, 18, 20, 21, 23, 23, 21, 22], dtype = "int32")
+# normals = numpy.array([0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0], dtype = "float32")
 
 if __name__ == "__main__":
 	gameRunning = True
 	clock = pygame.time.Clock()
 	display = display.display_manager()
 	loader = l.loader()
-	shader = ss.static_shader()
-	renderer = r.renderer(shader, display.screen)
+	renderer = mr.master_renderer(display.screen)
 	
-	data = o.obj_file_loader().load_obj("data\\models\\res\\dragon.obj")
-	test = loader.load_to_vao(data.get_vertices(), data.get_texture_coordinates(), data.get_normals(), data.get_indices())
-	test_texture = mt.model_texture(loader.load_texture("light_blue"))
-	textured_test = tm.textured_model(test, test_texture)
-	mo_test = textured_test.get_texture()
-	mo_test.set_shine_damper(10)
-	mo_test.set_reflectivity(1)
-	test_entity = e.entity(textured_test, (0, 0, -25), 0, 0, 0, 1)
+	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
+	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
+	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("balloons")))
+	# textured_cube.get_texture().set_shine_damper(10)
+	# textured_cube.get_texture().set_reflectivity(1)
 	
-	model = loader.load_to_vao(vertices, texture_coords, normals, indices)
-	texture = mt.model_texture(loader.load_texture("balloons"))
-	textured_model = tm.textured_model(model, texture)
-	entity = e.entity(textured_model, (0, 0, -15), 0, 0, 0, 1)
+	entity_list = []
+	for i in range(200):
+		x = random.uniform(-50.0, 50.0)
+		y = random.uniform(-1.0, 50.0)
+		z = random.uniform(-50.0, 50.0)
+		rx = random.uniform(0.0, 180)
+		ry = random.uniform(0.0, 180)
+		entity_list.append(e.entity(textured_cube, (x, y, z), rx, ry, 0, 1))
 	
-	light = li.light((0, 0, -20.0), (1.0, 1.0, 1.0))
+	terrain = t.terrain(-0.5, -0.5, loader, loader.load_texture("leaf"))
+	
+	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = c.camera()
 	
 	while gameRunning == True:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
 		
-		entity.increase_position(0.002, 0.0, -0.002)
-		entity.increase_rotation(1.0, 1.0, 0.0)
-		test_entity.increase_rotation(0.0, 1.0, 0.0)
+		# entity.increase_position(0.002, 0.0, -0.002)
+
 		camera.move()
-		renderer.prepare()
-		shader.start()
-		shader.load_light(light)
-		shader.load_view_matrix(camera)
-		renderer.render(entity, shader)
-		renderer.render(test_entity, shader)
-		shader.stop()
+		renderer.process_terrain(terrain)
+		for entity in entity_list:
+			entity.increase_rotation(1.0, 1.0, 0.0)
+			renderer.process_entity(entity)
+		renderer.render(light, camera)
 		display.update_display()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-				shader.clean_up()
+				renderer.clean_up()
 				loader.clean_up()
 				display.close_display()
 				gameRunning = False

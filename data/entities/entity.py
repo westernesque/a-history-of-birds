@@ -26,7 +26,9 @@ class entity(object):
 	def get_position(self):
 		return self.position
 	def set_position(self, position):
+		self.position = list(self.position)
 		self.position = position
+		self.position = tuple(self.position)
 	def get_rotation_x(self):
 		return self.rotation_x
 	def set_rotation_x(self, rotation_x):

@@ -41,7 +41,7 @@ if __name__ == "__main__":
 	textured_bush.get_texture().set_has_transparency(True)
 	textured_bush.get_texture().set_use_fake_lighting(True)
 	
-	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
+	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
 	

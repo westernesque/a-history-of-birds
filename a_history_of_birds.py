@@ -12,6 +12,7 @@ import data.terrains.terrain as t
 import data.textures.terrain_texture as tt
 import data.textures.terrain_texture_pack as ttp
 import data.entities.entity as e
+import data.entities.player as p
 
 # vertices = numpy.array([-0.5, 0.5, 0, -0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0], dtype = "float32")
 # indices =  numpy.array([0,1,3,3,1,2], dtype = "int32")
@@ -36,8 +37,15 @@ if __name__ == "__main__":
 	bush = o.obj_file_loader().load_obj("data\\models\\res\\grass_model.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
 	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("grass_texture")))
+	
 	textured_bush.get_texture().set_has_transparency(True)
 	textured_bush.get_texture().set_use_fake_lighting(True)
+	
+	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
+	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
+	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
+	
+	player = p.player(textured_player_model, (0, 0.5, -50), 0, 0, 0, 1)
 	
 	entity_list = []
 	bush_list = []
@@ -67,10 +75,9 @@ if __name__ == "__main__":
 	while gameRunning == True:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
-		
-		# entity.increase_position(0.002, 0.0, -0.002)
-
+		player.move(display)
 		camera.move()
+		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)

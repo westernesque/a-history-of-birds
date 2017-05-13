@@ -1,4 +1,7 @@
-class entity():
+from abc import ABCMeta, abstractmethod
+
+class entity(object):
+	__metaclass__ = ABCMeta
 	def __init__(self, model, position, rotation_x, rotation_y, rotation_z, scale):
 		self.model = model
 		self.position = position

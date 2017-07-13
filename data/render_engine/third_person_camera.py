@@ -20,14 +20,7 @@ class third_person_camera():
 		horizontal_distance = self.calculate_horizontal_distance()
 		vertical_distance = self.calculate_vertical_distance()
 		self.calculate_camera_position(horizontal_distance, vertical_distance)
-		# self.yaw = self.player.get_rotation_y() - self.angle_around_player
-		# self.yaw = (360 - self.player.get_rotation_y()) + self.angle_around_player
 		self.yaw = 360 - (self.player.get_rotation_y() - self.angle_around_player)
-		print self.position
-		print "self.pitch: " + str(self.pitch)
-		print "self.yaw: " + str(self.yaw)
-		print "self.player.rotation_y: " + str(self.player.get_rotation_y())
-		print "self.angle_around_player: " + str(self.angle_around_player)
 	def calculate_zoom(self, mouse_keys, rel_mouse_pos):
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_z] == True:
@@ -58,9 +51,7 @@ class third_person_camera():
 		return self.distance_from_player * numpy.sin(numpy.radians(self.pitch))
 	def calculate_camera_position(self, horizontal_distance, vertical_distance):
 		self.position = list(self.position)
-		# theta = self.player.get_rotation_y() - self.angle_around_player
 		theta = 360 - (self.player.get_rotation_y() - self.angle_around_player)
-		print "theta: " + str(theta)
 		offset_x = float(horizontal_distance * numpy.sin(numpy.radians(theta)))
 		offset_z = float(horizontal_distance * numpy.cos(numpy.radians(theta)))
 		self.position[0] = list(self.player.get_position())[0] + offset_x

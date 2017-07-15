@@ -27,11 +27,8 @@ class entity_renderer():
 		self.shader.load_fake_light_variable(model.texture.get_use_fake_lighting())
 		self.shader.load_shine_variables(model.texture.get_shine_damper(), model.texture.get_reflectivity())
 		glActiveTexture(GL_TEXTURE0)
-		glBindTexture(GL_TEXTURE_2D, model.texture.get_texture_id())	
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, model.texture.get_texture_data())
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+		glBindTexture(GL_TEXTURE_2D, model.texture.get_texture_id())
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, model.texture.texture_image.get_width(), model.texture.texture_image.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, model.texture.get_texture_data())
 	def unbind_textured_model(self):
 		self.enable_culling()
 		glDisableVertexAttribArray(0)

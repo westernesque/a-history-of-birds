@@ -2,6 +2,7 @@ class model_texture():
 	def __init__(self, texture):
 		self.texture_id = texture[0]
 		self.texture_data = texture[1]
+		self.texture_image = texture[2]
 		self.shine_damper = 1
 		self.reflectivity = 0
 		self.has_transparency = False

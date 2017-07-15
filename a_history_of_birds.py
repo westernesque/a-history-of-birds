@@ -24,8 +24,9 @@ if __name__ == "__main__":
 	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
-	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("balloons")))
-
+	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
+	textured_cube.get_texture().set_has_transparency(False)
+	
 	bush = o.obj_file_loader().load_obj("data\\models\\res\\grass_model.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
 	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("grass_texture")))
@@ -77,7 +78,6 @@ if __name__ == "__main__":
 			renderer.process_entity(entity)
 		for bush in bush_list:
 			renderer.process_entity(bush)
-		# renderer.render(light, camera)
 		display.update_display()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):

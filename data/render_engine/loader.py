@@ -20,9 +20,13 @@ class loader():
 		texture_id = glGenTextures(1)
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, texture_id)	
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pygame.image.load(texture).get_width(), pygame.image.load(texture).get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+		glGenerateMipmap(GL_TEXTURE_2D)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0)
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 		self.textures.append(texture_id)
-		return texture_id, texture_data
+		return texture_id, texture_data, pygame.image.load(texture)
 	def clean_up(self):
 		for vao in self.vaos:
 			glDeleteVertexArrays(1, vao)

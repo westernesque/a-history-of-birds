@@ -60,7 +60,7 @@ if __name__ == "__main__":
 	
 	t_blend_map = tt.terrain_texture(loader.load_texture("blend_map"))
 	
-	terrain = t.terrain(-0.5, -0.5, loader, t_terrain_texture_pack, t_blend_map)
+	terrain = t.terrain(-0.5, -0.5, loader, t_terrain_texture_pack, t_blend_map, "height_map")
 	
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)

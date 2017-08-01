@@ -1,6 +1,13 @@
 import numpy
 
 class maths():
+	def barycentric_coordinates(self, point_1, point_2, point_3, position):
+		det = (point_2[2] - point_3[2]) * (point_1[0] - point_3[0]) + (point_3[0] - point_2[0]) * (point_1[2] - point_3[2])
+		l1 = float((point_2[2] - point_3[2]) * (position[0] - point_3[0]) + (point_3[0] - point_2[0]) * (position[1] - point_3[2])) / det
+		l2 = float((point_3[2] - point_1[2]) * (position[0] - point_3[0]) + (point_1[0] - point_3[0]) * (position[1] - point_3[2])) / det
+		l3 = float(1.0) - l1 - l2
+		# print "l1, l2, l3: " + str(l1) + ", " + str(l2) + ", " + str(l3)
+		return l1 * point_1[1] + l2 * point_2[1] + l3 * point_3[1]	
 	def create_transformation_matrix(self, translation, rotation_x, rotation_y, rotation_z, scale):
 		matrix = numpy.identity(4)
 		matrix = self.translate(translation, matrix, matrix)

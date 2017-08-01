@@ -27,29 +27,19 @@ if __name__ == "__main__":
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
 	textured_cube.get_texture().set_has_transparency(False)
 	
-	bush = o.obj_file_loader().load_obj("data\\models\\res\\grass_model.obj")
+	bush = o.obj_file_loader().load_obj("data\\models\\res\\tree_two.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
-	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("grass_texture")))
+	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("tree_texture")))
 	
-	textured_bush.get_texture().set_has_transparency(True)
-	textured_bush.get_texture().set_use_fake_lighting(True)
+	textured_bush.get_texture().set_has_transparency(False)
+	textured_bush.get_texture().set_use_fake_lighting(False)
 	
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
 	
-	player = p.player(textured_player_model, (0.0, 0.0, 0.0), 0.0, 0.0, 0.0, 1.0)
+	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 0.25)
 	
-	entity_list = []
-	bush_list = []
-	for i in range(200):
-		x = random.uniform(-50.0, 100.0)
-		y = random.uniform(1.5, 100.0)
-		z = random.uniform(-50.0, 100.0)
-		rx = random.uniform(0.0, 180)
-		ry = random.uniform(0.0, 180)
-		entity_list.append(e.entity(textured_cube, (x, y, z), rx, ry, 0, 1))
-		bush_list.append(e.entity(textured_bush, (x, 0, z), 0, ry, 0, 1))
 	
 	t_background_texture = tt.terrain_texture(loader.load_texture("leaf"))
 	t_r_texture = tt.terrain_texture(loader.load_texture("dirt"))
@@ -60,7 +50,19 @@ if __name__ == "__main__":
 	
 	t_blend_map = tt.terrain_texture(loader.load_texture("blend_map"))
 	
-	terrain = t.terrain(-0.5, -0.5, loader, t_terrain_texture_pack, t_blend_map, "height_map")
+	terrain = t.terrain(0.0, 0.0, loader, t_terrain_texture_pack, t_blend_map, "height_map")
+	
+	entity_list = []
+	bush_list = []
+	for i in range(200):
+		x = random.uniform(0.0, 800.0)
+		z = random.uniform(0.0, 800.0)
+		rand_y = random.uniform(0.0, 100.0) 
+		y = terrain.get_terrain_height(x, z)
+		rx = random.uniform(0.0, 180)
+		ry = random.uniform(0.0, 180)
+		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
+		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
 	
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)
@@ -68,7 +70,7 @@ if __name__ == "__main__":
 	while gameRunning == True:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
-		player.move(display)
+		player.move(display, terrain)
 		camera.move()
 		renderer.render(light, camera)
 		renderer.process_entity(player)

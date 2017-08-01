@@ -1,6 +1,6 @@
 from OpenGL.GL import *
 import data.tools.maths as m
-import pygame, numpy
+import pygame
 
 class entity_renderer():
 	def __init__(self, shader, display, projection_matrix):

@@ -35,10 +35,10 @@ class terrain_shader(sp.shader_program):
 		view_matrix = m.maths().create_view_matrix(camera)
 		super(terrain_shader, self).load_matrix(self.location_view_matrix, view_matrix)
 	def load_light(self, light):
-		super(terrain_shader, self).load_vector(self.location_light_position, light.get_position())
-		super(terrain_shader, self).load_vector(self.location_light_color, light.get_color())
+		super(terrain_shader, self).load_3d_vector(self.location_light_position, light.get_position())
+		super(terrain_shader, self).load_3d_vector(self.location_light_color, light.get_color())
 	def load_sky_color(self, red, green, blue):
-		super(terrain_shader, self).load_vector(self.location_sky_color, (red, green, blue))
+		super(terrain_shader, self).load_3d_vector(self.location_sky_color, (red, green, blue))
 	def connect_texture_units(self):
 		super(terrain_shader, self).load_int(self.location_background_texture, 0)
 		super(terrain_shader, self).load_int(self.location_r_texture, 1)

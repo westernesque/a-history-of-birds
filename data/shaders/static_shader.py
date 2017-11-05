@@ -20,6 +20,12 @@ class static_shader(sp.shader_program):
 		self.location_reflectivity = super(static_shader, self).get_uniform_location("reflectivity")
 		self.location_use_fake_lighting = super(static_shader, self).get_uniform_location("use_fake_lighting")
 		self.location_sky_color = super(static_shader, self).get_uniform_location("sky_color")
+		self.location_number_of_rows = super(static_shader, self).get_uniform_location("number_of_rows")
+		self.location_offset = super(static_shader, self).get_uniform_location("offset")
+	def load_number_of_rows(self, number_of_rows):
+		super(static_shader, self).load_float(self.location_number_of_rows, number_of_rows)
+	def load_offset(self, x_offset, y_offset):
+		super(static_shader, self).load_2d_vector(self.location_offset, (x_offset, y_offset))
 	def load_fake_light_variable(self, use_fake):
 		super(static_shader, self).load_boolean(self.location_use_fake_lighting, use_fake)
 	def load_shine_variables(self, shine_damper, reflectivity):
@@ -33,7 +39,7 @@ class static_shader(sp.shader_program):
 		view_matrix = m.maths().create_view_matrix(camera)
 		super(static_shader, self).load_matrix(self.location_view_matrix, view_matrix)
 	def load_light(self, light):
-		super(static_shader, self).load_vector(self.location_light_position, light.get_position())
-		super(static_shader, self).load_vector(self.location_light_color, light.get_color())
+		super(static_shader, self).load_3d_vector(self.location_light_position, light.get_position())
+		super(static_shader, self).load_3d_vector(self.location_light_color, light.get_color())
 	def load_sky_color(self, red, green, blue):
-		super(static_shader, self).load_vector(self.location_sky_color, (red, green, blue))
+		super(static_shader, self).load_3d_vector(self.location_sky_color, (red, green, blue))

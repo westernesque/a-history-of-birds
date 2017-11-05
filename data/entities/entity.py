@@ -2,13 +2,20 @@ from abc import ABCMeta, abstractmethod
 
 class entity(object):
 	__metaclass__ = ABCMeta
-	def __init__(self, model, position, rotation_x, rotation_y, rotation_z, scale):
+	def __init__(self, model, position, rotation_x, rotation_y, rotation_z, scale, texture_index = 1):
 		self.model = model
 		self.position = position
 		self.rotation_x = rotation_x
 		self.rotation_y = rotation_y
 		self.rotation_z = rotation_z
 		self.scale = scale
+		self.texture_index = texture_index
+	def get_texture_x_offset(self):
+		column = self.texture_index % self.model.get_texture().get_number_of_rows()
+		return column / self.model.get_texture().get_number_of_rows()
+	def get_texture_y_offset(self):
+		row = self.texture_index / self.model.get_texture().get_number_of_rows()
+		return row / self.model.get_texture().get_number_of_rows()
 	def increase_position(self, increase_x, increase_y, increase_z):
 		self.position = list(self.position)
 		self.position[0] += increase_x

@@ -22,6 +22,8 @@ class entity_renderer():
 		glEnableVertexAttribArray(0)
 		glEnableVertexAttribArray(1)
 		glEnableVertexAttribArray(2)
+		texture = model.get_texture()
+		self.shader.load_number_of_rows(texture.get_number_of_rows())
 		if model.texture.get_has_transparency() == True:
 			self.disable_culling()
 		self.shader.load_fake_light_variable(model.texture.get_use_fake_lighting())
@@ -38,6 +40,7 @@ class entity_renderer():
 	def prepare_entity(self, entity):
 		transformation_matrix = m.maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
 		self.shader.load_transformation_matrix(transformation_matrix)
+		self.shader.load_offset(entity.get_texture_x_offset(), entity.get_texture_y_offset())
 	def enable_culling(self):
 		glEnable(GL_CULL_FACE)
 		glCullFace(GL_BACK)

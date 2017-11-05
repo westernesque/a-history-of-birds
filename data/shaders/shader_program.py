@@ -39,8 +39,10 @@ class shader_program(object):
 		glUniform1f(location, value)
 	def load_int(self, location, value):
 		glUniform1i(location, value)
-	def load_vector(self, location, vector):
+	def load_3d_vector(self, location, vector):
 		glUniform3f(location, vector[0], vector[1], vector[2])
+	def load_2d_vector(self, location, vector):
+		glUniform2f(location, vector[0], vector[1])
 	def load_boolean(self, location, value):
 		to_load = 0
 		if value == True:

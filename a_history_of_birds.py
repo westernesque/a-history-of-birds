@@ -34,6 +34,15 @@ if __name__ == "__main__":
 	textured_bush.get_texture().set_has_transparency(False)
 	textured_bush.get_texture().set_use_fake_lighting(False)
 	
+	texture_atlus_test = mt.model_texture(loader.load_texture("fern"))
+	fern = o.obj_file_loader().load_obj("data\\models\\res\\tree_two.obj")
+	fern_model = loader.load_to_vao(fern.get_vertices(), fern.get_texture_coordinates(), fern.get_normals(), fern.get_indices())
+	texture_atlus_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
+	texture_atlus_test.set_number_of_rows(2)
+	
+	texture_atlus_test_fern.get_texture().set_has_transparency(True)
+	texture_atlus_test_fern.get_texture().set_use_fake_lighting(True)
+	
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
@@ -54,6 +63,7 @@ if __name__ == "__main__":
 	
 	entity_list = []
 	bush_list = []
+	texture_atlus_test_list = []
 	for i in range(200):
 		x = random.uniform(0.0, 800.0)
 		z = random.uniform(0.0, 800.0)
@@ -63,7 +73,9 @@ if __name__ == "__main__":
 		ry = random.uniform(0.0, 180)
 		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
 		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
-	
+		texture_atlus_test_list.append(e.entity(texture_atlus_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,4)))
+		## ALMOST. it's using all of the textures on one model instead of picking one...
+		## just need to make sure it's counting the rows correctly.
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)
 	
@@ -78,8 +90,10 @@ if __name__ == "__main__":
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
-		for bush in bush_list:
-			renderer.process_entity(bush)
+#		for bush in bush_list:
+#			renderer.process_entity(bush)
+		for fern in texture_atlus_test_list:
+			renderer.process_entity(fern)
 		display.update_display()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):

@@ -7,6 +7,7 @@ class model_texture():
 		self.reflectivity = 0
 		self.has_transparency = False
 		self.use_fake_lighting = False
+		self.number_of_rows = 1
 	def get_use_fake_lighting(self):
 		return self.use_fake_lighting
 	def set_use_fake_lighting(self, value):
@@ -27,3 +28,7 @@ class model_texture():
 		return self.reflectivity
 	def set_reflectivity(self, reflectivity):
 		self.reflectivity = reflectivity
+	def get_number_of_rows(self):
+		return self.number_of_rows
+	def set_number_of_rows(self, value):
+		self.number_of_rows = value

@@ -35,7 +35,7 @@ if __name__ == "__main__":
 	textured_bush.get_texture().set_use_fake_lighting(False)
 	
 	texture_atlus_test = mt.model_texture(loader.load_texture("fern"))
-	fern = o.obj_file_loader().load_obj("data\\models\\res\\tree_two.obj")
+	fern = o.obj_file_loader().load_obj("data\\models\\res\\fern.obj")
 	fern_model = loader.load_to_vao(fern.get_vertices(), fern.get_texture_coordinates(), fern.get_normals(), fern.get_indices())
 	texture_atlus_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
 	texture_atlus_test.set_number_of_rows(2)
@@ -90,8 +90,8 @@ if __name__ == "__main__":
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
-#		for bush in bush_list:
-#			renderer.process_entity(bush)
+		for bush in bush_list:
+			renderer.process_entity(bush)
 		for fern in texture_atlus_test_list:
 			renderer.process_entity(fern)
 		display.update_display()

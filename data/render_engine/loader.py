@@ -50,7 +50,8 @@ class loader():
 	def unbind_vao(self):
 		glBindVertexArray(0)
 	def store_data_in_int_buffer(self, data):
-		buffer = numpy.array(data, dtype = "int32")
+		# buffer = numpy.array(data, dtype = "int32")
+		buffer = data
 		return buffer
 	def bind_indices_buffer(self, indices):
 		vbo_id = glGenBuffers(1)
@@ -59,5 +60,6 @@ class loader():
 		buffer = self.store_data_in_int_buffer(indices)
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer.nbytes, buffer, GL_STATIC_DRAW)
 	def store_data_in_float_buffer(self, data):
-		buffer = numpy.array(data, dtype = "float32")
+		# buffer = numpy.array(data, dtype = "float32")
+		buffer = data
 		return buffer

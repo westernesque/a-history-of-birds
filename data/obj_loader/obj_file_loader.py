@@ -39,8 +39,7 @@ class obj_file_loader():
 		self.textures_array = numpy.zeros((len(self.vertices) * 2), dtype = "float32")
 		self.normals_array = numpy.zeros((len(self.vertices) * 3), dtype = "float32")
 		self.indices_array = self.convert_indices_list_to_array(self.indices)
-		self.furthest = self.convert_data_to_arrays(self.vertices, self.textures, self.normals, self.vertices_array, self.textures_array, self.normals_array)
-		
+		self.furthest = self.convert_data_to_arrays(self.vertices, self.textures, self.normals, self.vertices_array, self.textures_array, self.normals_array)		
 		data = md.model_data(self.vertices_array, self.textures_array, self.normals_array, self.indices_array, self.furthest)
 		return data
 		

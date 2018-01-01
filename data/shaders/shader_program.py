@@ -49,8 +49,8 @@ class shader_program(object):
 			to_load = 1
 		glUniform1f(location, to_load)
 	def load_matrix(self, location, matrix):
-		# matrix_buffer = numpy.array(matrix, dtype = "float32")
-		matrix_buffer = matrix
+		matrix_buffer = numpy.array(matrix, dtype = "float32")
+		# matrix_buffer = matrix
 		glUniformMatrix4fv(location, 1, GL_FALSE, matrix_buffer)	
 	def load_shader(self, file, type):
 		shader_file = open((file), "r")

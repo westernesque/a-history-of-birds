@@ -29,11 +29,12 @@ class loader():
 		return texture_id, texture_data, pygame.image.load(texture)
 	def clean_up(self):
 		for vao in self.vaos:
-			glDeleteVertexArrays(1, vao)
+			glDeleteVertexArrays(1, numpy.array(vao))
 		for vbo in self.vbos:
-			glDeleteBuffers(1, vbo)
+			glDeleteBuffers(1, numpy.array(vbo))
 		for texture in self.textures:
-			glDeleteTextures(1, texture)
+			# glDeleteTextures(1, texture)
+			glDeleteTextures(texture)
 	def create_vao(self):
 		vao_id = glGenVertexArrays(1)
 		glBindVertexArray(vao_id)
@@ -50,8 +51,8 @@ class loader():
 	def unbind_vao(self):
 		glBindVertexArray(0)
 	def store_data_in_int_buffer(self, data):
-		# buffer = numpy.array(data, dtype = "int32")
-		buffer = data
+		buffer = numpy.array(data, dtype = "int32")
+		# buffer = data
 		return buffer
 	def bind_indices_buffer(self, indices):
 		vbo_id = glGenBuffers(1)
@@ -60,6 +61,6 @@ class loader():
 		buffer = self.store_data_in_int_buffer(indices)
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer.nbytes, buffer, GL_STATIC_DRAW)
 	def store_data_in_float_buffer(self, data):
-		# buffer = numpy.array(data, dtype = "float32")
-		buffer = data
+		buffer = numpy.array(data, dtype = "float32")
+		# buffer = data
 		return buffer

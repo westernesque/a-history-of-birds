@@ -19,6 +19,7 @@ if __name__ == "__main__":
 	gameRunning = True
 	clock = pygame.time.Clock()
 	display = display.display_manager()
+	numpy.show_config()
 	loader = l.loader()
 	renderer = mr.master_renderer(display.screen)
 	
@@ -74,11 +75,19 @@ if __name__ == "__main__":
 		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
 		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
 		texture_atlus_test_list.append(e.entity(texture_atlus_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,4)))
+		
+		####
 		## ALMOST. it's using all of the textures on one model instead of picking one...
-		## just need to make sure it's counting the rows correctly.
+		## just need to make sure it's counting the rows correctly...
+		
+		# PERFORMANCE CHECKS... 
+		### 1.) verify that fps of pygame is accurate. 
+		### 2.) see about reducing the amount of time numpy.dot takes?
+		### 3.) look into high CPU usage for numpy in general.
+		####
+		
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)
-	
 	while gameRunning == True:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))

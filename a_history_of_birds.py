@@ -35,19 +35,19 @@ if __name__ == "__main__":
 	textured_bush.get_texture().set_has_transparency(False)
 	textured_bush.get_texture().set_use_fake_lighting(False)
 	
-	texture_atlus_test = mt.model_texture(loader.load_texture("fern"))
+	texture_atlas_test = mt.model_texture(loader.load_texture("fern"))
+	texture_atlas_test.set_number_of_rows(2)
 	fern = o.obj_file_loader().load_obj("data\\models\\res\\fern.obj")
 	fern_model = loader.load_to_vao(fern.get_vertices(), fern.get_texture_coordinates(), fern.get_normals(), fern.get_indices())
-	texture_atlus_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
-	texture_atlus_test.set_number_of_rows(2)
+	# texture_atlas_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
+	texture_atlas_test_fern = tm.textured_model(fern_model, texture_atlas_test)
 	
-	texture_atlus_test_fern.get_texture().set_has_transparency(True)
-	texture_atlus_test_fern.get_texture().set_use_fake_lighting(True)
+	texture_atlas_test_fern.get_texture().set_has_transparency(True)
+	texture_atlas_test_fern.get_texture().set_use_fake_lighting(True)
 	
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
-	
 	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 0.25)
 	
 	
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 		ry = random.uniform(0.0, 180)
 		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
 		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
-		texture_atlus_test_list.append(e.entity(texture_atlus_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,4)))
+		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 		
 		####
 		## ALMOST. it's using all of the textures on one model instead of picking one...
@@ -85,7 +85,16 @@ if __name__ == "__main__":
 		### 2.) see about reducing the amount of time numpy.dot takes?
 		### 3.) look into high CPU usage for numpy in general.
 		####
-		
+	print "number of rows in texture_atlas_test: " + str(texture_atlas_test.get_number_of_rows())
+	print "fern texture index: " + str(texture_atlus_test_list[0].texture_index)
+	print "texture offset x test: " + str(texture_atlus_test_list[0].get_texture_x_offset())
+	print "texture offset y test: " + str(texture_atlus_test_list[0].get_texture_y_offset())
+	print "fern texture index: " + str(texture_atlus_test_list[1].texture_index)
+	print "texture offset x test: " + str(texture_atlus_test_list[1].get_texture_x_offset())
+	print "texture offset y test: " + str(texture_atlus_test_list[1].get_texture_y_offset())
+	print "fern texture index: " + str(texture_atlus_test_list[2].texture_index)
+	print "texture offset x test: " + str(texture_atlus_test_list[2].get_texture_x_offset())
+	print "texture offset y test: " + str(texture_atlus_test_list[2].get_texture_y_offset())
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)
 	while gameRunning == True:

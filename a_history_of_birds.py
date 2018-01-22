@@ -6,7 +6,7 @@ import data.render_engine.light as li
 import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.render_engine.third_person_camera as tpc
-import data.shaders.static_shader as ss
+#import data.shaders.static_shader as ss
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
 import data.terrains.terrain as t
@@ -14,6 +14,8 @@ import data.textures.terrain_texture as tt
 import data.textures.terrain_texture_pack as ttp
 import data.entities.entity as e
 import data.entities.player as p
+import data.guis.gui_texture as gt
+import data.guis.gui_renderer as gr
 
 if __name__ == "__main__":
 	gameRunning = True
@@ -22,6 +24,12 @@ if __name__ == "__main__":
 	numpy.show_config()
 	loader = l.loader()
 	renderer = mr.master_renderer(display.screen)
+	
+	guis = []
+	gui = gt.gui_texture(loader.load_texture("balloons"), (0.5, 0.5), 1.0) #returns 
+	guis.append(gui)
+	gui_renderer = gr.gui_renderer(loader)
+	print "length of guis list: " + str(len(guis))
 	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
@@ -41,7 +49,6 @@ if __name__ == "__main__":
 	fern_model = loader.load_to_vao(fern.get_vertices(), fern.get_texture_coordinates(), fern.get_normals(), fern.get_indices())
 	# texture_atlas_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
 	texture_atlas_test_fern = tm.textured_model(fern_model, texture_atlas_test)
-	
 	texture_atlas_test_fern.get_texture().set_has_transparency(True)
 	texture_atlas_test_fern.get_texture().set_use_fake_lighting(True)
 	
@@ -76,25 +83,11 @@ if __name__ == "__main__":
 		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
 		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 		
-		####
-		## ALMOST. it's using all of the textures on one model instead of picking one...
-		## just need to make sure it's counting the rows correctly...
-		
 		# PERFORMANCE CHECKS... 
 		### 1.) verify that fps of pygame is accurate. 
 		### 2.) see about reducing the amount of time numpy.dot takes?
 		### 3.) look into high CPU usage for numpy in general.
 		####
-	print "number of rows in texture_atlas_test: " + str(texture_atlas_test.get_number_of_rows())
-	print "fern texture index: " + str(texture_atlus_test_list[0].texture_index)
-	print "texture offset x test: " + str(texture_atlus_test_list[0].get_texture_x_offset())
-	print "texture offset y test: " + str(texture_atlus_test_list[0].get_texture_y_offset())
-	print "fern texture index: " + str(texture_atlus_test_list[1].texture_index)
-	print "texture offset x test: " + str(texture_atlus_test_list[1].get_texture_x_offset())
-	print "texture offset y test: " + str(texture_atlus_test_list[1].get_texture_y_offset())
-	print "fern texture index: " + str(texture_atlus_test_list[2].texture_index)
-	print "texture offset x test: " + str(texture_atlus_test_list[2].get_texture_x_offset())
-	print "texture offset y test: " + str(texture_atlus_test_list[2].get_texture_y_offset())
 	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
 	camera = tpc.third_person_camera(player)
 	while gameRunning == True:
@@ -102,9 +95,9 @@ if __name__ == "__main__":
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
 		player.move(display, terrain)
 		camera.move()
-		renderer.render(light, camera)
 		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
+		# gui_renderer.render(guis)
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
@@ -112,9 +105,12 @@ if __name__ == "__main__":
 			renderer.process_entity(bush)
 		for fern in texture_atlus_test_list:
 			renderer.process_entity(fern)
+		renderer.render(light, camera)
+		gui_renderer.render(guis)
 		display.update_display()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+				gui_renderer.clean_up()
 				renderer.clean_up()
 				loader.clean_up()
 				display.close_display()

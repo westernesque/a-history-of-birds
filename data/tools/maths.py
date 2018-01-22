@@ -8,15 +8,26 @@ class maths():
 		l3 = float(1.0) - l1 - l2
 		# print "l1, l2, l3: " + str(l1) + ", " + str(l2) + ", " + str(l3)
 		return l1 * point_1[1] + l2 * point_2[1] + l3 * point_3[1]	
-	def create_transformation_matrix(self, translation, rotation_x, rotation_y, rotation_z, scale):
-		# matrix = numpy.identity(4)
+	# def create_transformation_matrix(self, translation, rotation_x, rotation_y, rotation_z, scale):
+	def create_transformation_matrix(self, *args):
 		matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-		matrix = self.translate(translation, matrix, matrix)
-		matrix = self.rotate(numpy.radians(rotation_x), (1, 0, 0), matrix, matrix)
-		matrix = self.rotate(numpy.radians(rotation_y), (0, 1, 0), matrix, matrix)
-		matrix = self.rotate(numpy.radians(rotation_z), (0, 0, 1), matrix, matrix)
-		matrix = self.scale(scale, matrix, matrix)
+		if len(args) == 5:
+		# matrix = numpy.identity(4)
+			# matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+			# matrix = self.translate(translation, matrix, matrix)
+			matrix = self.translate(args[0], matrix, matrix)
+			# matrix = self.rotate(numpy.radians(rotation_x), (1, 0, 0), matrix, matrix)
+			matrix = self.rotate(numpy.radians(args[1]), (1, 0, 0), matrix, matrix)
+			# matrix = self.rotate(numpy.radians(rotation_y), (0, 1, 0), matrix, matrix)
+			matrix = self.rotate(numpy.radians(args[2]), (0, 1, 0), matrix, matrix)
+			# matrix = self.rotate(numpy.radians(rotation_z), (0, 0, 1), matrix, matrix)
+			matrix = self.rotate(numpy.radians(args[3]), (0, 0, 1), matrix, matrix)
+			# matrix = self.scale(scale, matrix, matrix)
+			matrix = self.scale(args[4], matrix, matrix)
 		# matrix = self.translate(translation, matrix, matrix)
+		if len(args) == 2:
+			matrix = self.translate(args[0], matrix, matrix)
+			matrix = self.scale(args[1], matrix, matrix)
 		return matrix
 	def create_view_matrix(self, camera):
 		# view_matrix = numpy.identity(4)
@@ -29,7 +40,10 @@ class maths():
 		view_matrix = self.translate(negative_camera_pos, view_matrix, view_matrix)
 		return view_matrix
 	def translate(self, translation, in_matrix, out_matrix):
-		t_x, t_y, t_z = translation[0], translation[1], translation[2]
+		if len(translation) == 3:
+			t_x, t_y, t_z = translation[0], translation[1], translation[2]
+		if len(translation) == 2:
+			t_x, t_y, t_z = translation[0], translation[1], 0
 		#translate_matrix = numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [t_x, t_y, t_z, 1]], dtype = "float32")
 		translate_matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [t_x, t_y, t_z, 1]]
 		# out_matrix = numpy.dot(in_matrix, translate_matrix)
@@ -56,8 +70,8 @@ class maths():
 		return out_matrix
 	def scale(self, scale, in_matrix, out_matrix):
 		s_x, s_y, s_z = scale, scale, scale
-		# scale_matrix = numpy.array([[s_x, 0, 0, 0],[0, s_y, 0, 0],[0, 0, s_z, 0],[0, 0, 0, 1]], dtype = "float32")
-		scale_matrix = [[s_x, 0, 0, 0],[0, s_y, 0, 0],[0, 0, s_z, 0],[0, 0, 0, 1]]
+		scale_matrix = numpy.array([[s_x, 0, 0, 0], [0, s_y, 0, 0], [0, 0, s_z, 0], [0, 0, 0, 1]], dtype = "float32")
+		# scale_matrix = [[s_x, 0, 0, 0],[0, s_y, 0, 0],[0, 0, s_z, 0],[0, 0, 0, 1]]
 		# out_matrix = numpy.dot(in_matrix, scale_matrix)
 		out_matrix = numpy.dot(scale_matrix, in_matrix)
 		return out_matrix

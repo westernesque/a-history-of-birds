@@ -6,14 +6,33 @@ class loader():
 	vaos = []
 	vbos = []
 	textures = []
-	def load_to_vao(self, positions, texture_coords, normals, indices):
-		vao_id = self.create_vao()
-		self.bind_indices_buffer(indices)
-		self.store_data_in_attribute_list(0, 3, positions)
-		self.store_data_in_attribute_list(1, 2, texture_coords)
-		self.store_data_in_attribute_list(2, 3, normals)
-		self.unbind_vao()
-		return rm.raw_model(vao_id, len(indices))
+	# def load_to_vao(self, positions, texture_coords, normals, indices):
+		# vao_id = self.create_vao()
+		# self.bind_indices_buffer(indices)
+		# self.store_data_in_attribute_list(0, 3, positions)
+		# self.store_data_in_attribute_list(1, 2, texture_coords)
+		# self.store_data_in_attribute_list(2, 3, normals)
+		# self.unbind_vao()
+		# return rm.raw_model(vao_id, len(indices))
+	def load_to_vao(self, *args):
+		if len(args) == 4:
+			vao_id = self.create_vao()
+			self.bind_indices_buffer(args[3])
+			self.store_data_in_attribute_list(0, 3, args[0])
+			self.store_data_in_attribute_list(1, 2, args[1])
+			self.store_data_in_attribute_list(2, 3, args[2])
+			self.unbind_vao()
+			return rm.raw_model(vao_id, len(args[3]))
+		if len(args) == 1:
+			vao_id = self.create_vao()
+			self.store_data_in_attribute_list(0, 2, args[0])
+			self.unbind_vao()
+			return rm.raw_model(vao_id, len(args[0]) / 2)
+	# def load_to_vao(self, positions):
+		# vao_id = self.create_vao()
+		# self.store_data_in_attribute_list(0, 2, positions)
+		# self.unbind_vao()
+		# return rm.raw_model(vao_id, len(positions) / 2)
 	def load_texture(self, file_name):
 		texture = "data\\textures\\res\\" + file_name + ".png"
 		texture_data = pygame.image.tostring(pygame.image.load(texture), "RGBA", True)
@@ -21,6 +40,7 @@ class loader():
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, texture_id)	
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pygame.image.load(texture).get_width(), pygame.image.load(texture).get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+		print str(file_name) + ": " + str(pygame.image.load(texture).get_width()) + " x " + str(pygame.image.load(texture).get_height())
 		glGenerateMipmap(GL_TEXTURE_2D)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0)

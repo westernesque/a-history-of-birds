@@ -26,7 +26,7 @@ if __name__ == "__main__":
 	renderer = mr.master_renderer(display.screen)
 	
 	guis = []
-	gui = gt.gui_texture(loader.load_texture("balloons"), (0.5, 0.5), 1.0) #returns 
+	gui = gt.gui_texture(loader.load_texture("balloons"), (0.5, 0.5), (0.5, 0.25))
 	guis.append(gui)
 	gui_renderer = gr.gui_renderer(loader)
 	print "length of guis list: " + str(len(guis))

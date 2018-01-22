@@ -69,7 +69,15 @@ class maths():
 			out_matrix = numpy.dot(rotate_z_matrix, in_matrix)
 		return out_matrix
 	def scale(self, scale, in_matrix, out_matrix):
-		s_x, s_y, s_z = scale, scale, scale
+		# s_x, s_y, s_z = scale, scale, scale
+		if type(scale) is int or type(scale) is float:
+			scale = scale,
+		if len(scale) == 1:
+			s_x, s_y, s_z = scale[0], scale[0], scale[0]
+		if len(scale) == 2:
+			s_x, s_y, s_z = scale[0], scale[1], scale[0]
+		if len(scale) == 3:
+			s_x, s_y, s_z = scale[0], scale[1], scale[2]
 		scale_matrix = numpy.array([[s_x, 0, 0, 0], [0, s_y, 0, 0], [0, 0, s_z, 0], [0, 0, 0, 1]], dtype = "float32")
 		# scale_matrix = [[s_x, 0, 0, 0],[0, s_y, 0, 0],[0, 0, s_z, 0],[0, 0, 0, 1]]
 		# out_matrix = numpy.dot(in_matrix, scale_matrix)

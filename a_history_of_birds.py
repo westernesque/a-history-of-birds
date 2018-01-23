@@ -26,7 +26,7 @@ if __name__ == "__main__":
 	renderer = mr.master_renderer(display.screen)
 	
 	guis = []
-	gui = gt.gui_texture(loader.load_texture("balloons"), (0.5, 0.5), (0.5, 0.25))
+	gui = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.25, 1.0))
 	guis.append(gui)
 	gui_renderer = gr.gui_renderer(loader)
 	print "length of guis list: " + str(len(guis))
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
-	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 0.25)
+	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 1.0)
 	
 	
 	t_background_texture = tt.terrain_texture(loader.load_texture("leaf"))

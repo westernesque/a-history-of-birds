@@ -26,8 +26,10 @@ if __name__ == "__main__":
 	renderer = mr.master_renderer(display.screen)
 	
 	guis = []
-	gui = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.25, 1.0))
-	guis.append(gui)
+	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
+	gui_two = gt.gui_texture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
+	guis.append(gui_one)
+	guis.append(gui_two)
 	gui_renderer = gr.gui_renderer(loader)
 	print "length of guis list: " + str(len(guis))
 	

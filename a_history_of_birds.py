@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
 	textured_cube.get_texture().set_has_transparency(False)
 	
-	bush = o.obj_file_loader().load_obj("data\\models\\res\\tree_two.obj")
+	bush = o.obj_file_loader().load_obj("data\\models\\res\\pine.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
 	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("tree_texture")))
 	
@@ -86,15 +86,18 @@ if __name__ == "__main__":
 	entity_list = []
 	bush_list = []
 	texture_atlus_test_list = []
-	for i in range(200):
+	for i in range(100):
 		x = random.uniform(0.0, 800.0)
+		t_x = random.uniform(0.0, 800.0)
 		z = random.uniform(0.0, 800.0)
+		t_z = random.uniform(0.0, 800.0)
 		rand_y = random.uniform(0.0, 100.0) 
 		y = terrain.get_terrain_height(x, z)
+		t_y = terrain.get_terrain_height(t_x, t_z)
 		rx = random.uniform(0.0, 180)
 		ry = random.uniform(0.0, 180)
 		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
-		bush_list.append(e.entity(textured_bush, (x, y, z), 0, 0, 0, 1))
+		bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
 		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 		
 		# PERFORMANCE CHECKS... 

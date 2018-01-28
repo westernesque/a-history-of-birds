@@ -23,6 +23,7 @@ class terrain():
 		return self.model
 	def get_terrain_height(self, world_x, world_z):
 		terrain_x = world_x - self.position_x
+		# print "terrain_x type: " + str(type(terrain_x))
 		terrain_z = world_z - self.position_z
 		grid_square_size = float(self.SIZE / (len(self.heights) - 1))
 		grid_x = int(numpy.floor(terrain_x / grid_square_size))
@@ -90,6 +91,7 @@ class terrain():
 		normal = normal / numpy.linalg.norm(normal)
 		return normal
 	def get_height(self, pixel_x, pixel_y, height_map_image):
+		# print "height_map_image.get_height() type: " + str(type(height_map_image.get_height()))
 		if pixel_x < 0 or pixel_x >= height_map_image.get_height() or pixel_y < 0 or pixel_y >= height_map_image.get_height():
 			return 0
 		else:

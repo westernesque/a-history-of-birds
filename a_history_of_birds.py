@@ -33,6 +33,13 @@ if __name__ == "__main__":
 	gui_renderer = gr.gui_renderer(loader)
 	print "length of guis list: " + str(len(guis))
 	
+	
+	lights = []
+	light = li.light((0, 10000, -7000), (1.0, 1.0, 1.0))
+	lights.append(light)
+	lights.append(li.light((-200.0, 10.0, -200.0), (10.0, 0.0, 0.0)))
+	lights.append(li.light((200.0, 10.0, 200.0), (0.0, 0.0, 10.0)))
+	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
@@ -44,6 +51,8 @@ if __name__ == "__main__":
 	
 	textured_bush.get_texture().set_has_transparency(False)
 	textured_bush.get_texture().set_use_fake_lighting(False)
+	# textured_bush.get_texture().set_shine_damper(0.5)
+	# textured_bush.get_texture().set_reflectivity(10.0)
 	
 	texture_atlas_test = mt.model_texture(loader.load_texture("fern"))
 	texture_atlas_test.set_number_of_rows(2)
@@ -52,13 +61,16 @@ if __name__ == "__main__":
 	# texture_atlas_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
 	texture_atlas_test_fern = tm.textured_model(fern_model, texture_atlas_test)
 	texture_atlas_test_fern.get_texture().set_has_transparency(True)
-	texture_atlas_test_fern.get_texture().set_use_fake_lighting(True)
+	texture_atlas_test_fern.get_texture().set_use_fake_lighting(False)
+	# texture_atlas_test_fern.get_texture().set_shine_damper(0.1)
+	# texture_atlas_test_fern.get_texture().set_reflectivity(100.0)
 	
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
+	# textured_player_model.get_texture().set_shine_damper(0.5)
+	# textured_player_model.get_texture().set_reflectivity(10.5)
 	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 1.0)
-	
 	
 	t_background_texture = tt.terrain_texture(loader.load_texture("leaf"))
 	t_r_texture = tt.terrain_texture(loader.load_texture("dirt"))
@@ -90,7 +102,7 @@ if __name__ == "__main__":
 		### 2.) see about reducing the amount of time numpy.dot takes?
 		### 3.) look into high CPU usage for numpy in general.
 		####
-	light = li.light((3000, 2000, 2000), (1.0, 1.0, 1.0))
+	
 	camera = tpc.third_person_camera(player)
 	while gameRunning == True:
 		clock.tick(60)
@@ -107,7 +119,7 @@ if __name__ == "__main__":
 			renderer.process_entity(bush)
 		for fern in texture_atlus_test_list:
 			renderer.process_entity(fern)
-		renderer.render(light, camera)
+		renderer.render(lights, camera)
 		gui_renderer.render(guis)
 		display.update_display()
 		for event in pygame.event.get():

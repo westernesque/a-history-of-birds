@@ -31,7 +31,7 @@ class static_shader(sp.shader_program):
 			self.location_light_position.append(None)
 			self.location_light_color.append(None)
 			self.location_light_position[x] = super(static_shader, self).get_uniform_location("light_position[" + str(x) + "]")
-			self.location_light_color[x] = super(static_shader, self).get_uniform_location("light_color{" + str(x) + "]")
+			self.location_light_color[x] = super(static_shader, self).get_uniform_location("light_color[" + str(x) + "]")
 	def load_number_of_rows(self, number_of_rows):
 		super(static_shader, self).load_float(self.location_number_of_rows, number_of_rows)
 	def load_offset(self, x_offset, y_offset):

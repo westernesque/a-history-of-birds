@@ -3,8 +3,8 @@ class model_texture():
 		self.texture_id = texture[0]
 		self.texture_data = texture[1]
 		self.texture_image = texture[2]
-		self.shine_damper = 1
-		self.reflectivity = 0
+		self.shine_damper = 0.5
+		self.reflectivity = 0.1
 		self.has_transparency = False
 		self.use_fake_lighting = False
 		self.number_of_rows = 1

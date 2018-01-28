@@ -34,7 +34,7 @@ void main(void){
 	}
 	
 	surface_normal = (transformation_matrix * vec4(actual_normal, 0.0)).xyz;
-	for(int i=0; i<4; i++){
+	for(int i = 0; i < 4; i++){
 		to_light_vector[i] = light_position[i] - world_position.xyz;
 	}
 	to_camera_vector = (inverse(view_matrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - world_position.xyz;

@@ -6,6 +6,7 @@ class static_shader(sp.shader_program):
 	VERTEX_FILE = "data\\shaders\\vertex_shader.txt"
 	FRAGMENT_FILE = "data\\shaders\\fragment_shader.txt"
 	location_light_position = []
+	location_attenuation = []
 	location_light_color = []
 	def __init__(self):
 		super(static_shader, self).__init__(self.VERTEX_FILE, self.FRAGMENT_FILE)
@@ -30,8 +31,10 @@ class static_shader(sp.shader_program):
 		for x in range(0, self.MAX_LIGHTS):
 			self.location_light_position.append(None)
 			self.location_light_color.append(None)
+			self.location_attenuation.append(None)
 			self.location_light_position[x] = super(static_shader, self).get_uniform_location("light_position[" + str(x) + "]")
 			self.location_light_color[x] = super(static_shader, self).get_uniform_location("light_color[" + str(x) + "]")
+			self.location_attenuation[x] = super(static_shader, self).get_uniform_location("attenuation[" + str(x) + "]")
 	def load_number_of_rows(self, number_of_rows):
 		super(static_shader, self).load_float(self.location_number_of_rows, number_of_rows)
 	def load_offset(self, x_offset, y_offset):
@@ -53,9 +56,11 @@ class static_shader(sp.shader_program):
 			if x < len(lights):
 				super(static_shader, self).load_3d_vector(self.location_light_position[x], lights[x].get_position())
 				super(static_shader, self).load_3d_vector(self.location_light_color[x], lights[x].get_color())
+				super(static_shader, self).load_3d_vector(self.location_attenuation[x], lights[x].get_attenuation())
 			else:
 				super(static_shader, self).load_3d_vector(self.location_light_position[x], (0.0, 0.0, 0.0))
 				super(static_shader, self).load_3d_vector(self.location_light_color[x], (0.0, 0.0, 0.0))
+				super(static_shader, self).load_3d_vector(self.location_attenuation[x], (1.0, 0.0, 0.0))
 		# super(static_shader, self).load_3d_vector(self.location_light_position, light.get_position())
 		# super(static_shader, self).load_3d_vector(self.location_light_color, light.get_color())
 	def load_sky_color(self, red, green, blue):

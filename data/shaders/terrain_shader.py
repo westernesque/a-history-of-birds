@@ -7,6 +7,7 @@ class terrain_shader(sp.shader_program):
 	FRAGMENT_FILE = "data\\shaders\\terrain_fragment_shader.txt"
 	location_light_position = []
 	location_light_color = []
+	location_attenuation = []
 	def __init__(self):
 		super(terrain_shader, self).__init__(self.VERTEX_FILE, self.FRAGMENT_FILE)
 	def bind_all_attributes(self):
@@ -30,8 +31,10 @@ class terrain_shader(sp.shader_program):
 		for x in range(0, self.MAX_LIGHTS):
 			self.location_light_position.append(None)
 			self.location_light_color.append(None)
+			self.location_attenuation.append(None)
 			self.location_light_position[x] = super(terrain_shader, self).get_uniform_location("light_position[" + str(x) + "]")
 			self.location_light_color[x] = super(terrain_shader, self).get_uniform_location("light_color[" + str(x) + "]")
+			self.location_attenuation[x] = super(terrain_shader, self).get_uniform_location("attenuation[" + str(x) + "]")
 	def load_shine_variables(self, shine_damper, reflectivity):
 		super(terrain_shader, self).load_float(self.location_shine_damper, shine_damper)
 		super(terrain_shader, self).load_float(self.location_reflectivity, reflectivity)
@@ -47,9 +50,11 @@ class terrain_shader(sp.shader_program):
 			if x < len(lights):
 				super(terrain_shader, self).load_3d_vector(self.location_light_position[x], lights[x].get_position())
 				super(terrain_shader, self).load_3d_vector(self.location_light_color[x], lights[x].get_color())
+				super(terrain_shader, self).load_3d_vector(self.location_attenuation[x], lights[x].get_attenuation())
 			else:
 				super(terrain_shader, self).load_3d_vector(self.location_light_position[x], (0.0, 0.0, 0.0))
 				super(terrain_shader, self).load_3d_vector(self.location_light_color[x], (0.0, 0.0, 0.0))
+				super(terrain_shader, self).load_3d_vector(self.location_attenuation[x], (1.0, 0.0, 0.0))
 		# super(terrain_shader, self).load_3d_vector(self.location_light_position, light.get_position())
 		# super(terrain_shader, self).load_3d_vector(self.location_light_color, light.get_color())
 	def load_sky_color(self, red, green, blue):

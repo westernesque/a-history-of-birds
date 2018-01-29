@@ -34,12 +34,6 @@ if __name__ == "__main__":
 	print "length of guis list: " + str(len(guis))
 	
 	
-	lights = []
-	light = li.light((0, 10000, -7000), (1.0, 1.0, 1.0))
-	lights.append(light)
-	lights.append(li.light((-200.0, 10.0, -200.0), (10.0, 0.0, 0.0)))
-	lights.append(li.light((200.0, 10.0, 200.0), (0.0, 0.0, 10.0)))
-	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
@@ -86,6 +80,12 @@ if __name__ == "__main__":
 	entity_list = []
 	bush_list = []
 	texture_atlus_test_list = []
+	
+	lamp = o.obj_file_loader().load_obj("data\\models\\res\\lamp.obj")
+	lamp_model = loader.load_to_vao(lamp.get_vertices(), lamp.get_texture_coordinates(), lamp.get_normals(), lamp.get_indices())
+	textured_lamp = tm.textured_model(lamp_model, mt.model_texture(loader.load_texture("lamp")))
+	textured_lamp.get_texture().set_use_fake_lighting(True)
+	
 	for i in range(100):
 		x = random.uniform(0.0, 800.0)
 		t_x = random.uniform(0.0, 800.0)
@@ -99,7 +99,26 @@ if __name__ == "__main__":
 		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
 		bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
 		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
-		
+	
+	lamp_test_y_1 = terrain.get_terrain_height(400.0, 400.0)
+	lamp_test_y_2 = terrain.get_terrain_height(370.0, 300.0)
+	lamp_test_y_3 = terrain.get_terrain_height(293.0, 305.0)
+	
+	entity_list.append(e.entity(textured_lamp, (400.0, lamp_test_y_1, 400.0), 0, 0, 0, 1))	
+	entity_list.append(e.entity(textured_lamp, (370.0, lamp_test_y_2, 300.0), 0, 0, 0, 1))	
+	entity_list.append(e.entity(textured_lamp, (293.0, lamp_test_y_3, 305.0), 0, 0, 0, 1))	
+	
+	lights = []
+	light = li.light((0, 1000, -7000), (0.4, 0.4, 0.4))
+	# lights.append(light)
+	lights.append(li.light((400.0, lamp_test_y_1 + 15.0, 400.0), (2.0, 0.0, 0.0), (1.0, 0.01, 0.002)))
+	lights.append(li.light((370.0, lamp_test_y_2 + 15.0, 300.0), (0.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
+	lights.append(li.light((293.0, lamp_test_y_3 + 15.0, 305.0), (2.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
+	# lights.append(li.light((-200.0, 10.0, -200.0), (10.0, 0.0, 0.0)))
+	# lights.append(li.light((200.0, 10.0, 200.0), (0.0, 0.0, 10.0)))
+	
+	print "length of entity_list: " + str(len(entity_list))
+	print "length of lights list: " + str(len(lights))
 		# PERFORMANCE CHECKS... 
 		### 1.) verify that fps of pygame is accurate. 
 		### 2.) see about reducing the amount of time numpy.dot takes?
@@ -116,7 +135,7 @@ if __name__ == "__main__":
 		renderer.process_terrain(terrain)
 		# gui_renderer.render(guis)
 		for entity in entity_list:
-			entity.increase_rotation(1.0, 1.0, 0.0)
+			# entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
 		for bush in bush_list:
 			renderer.process_entity(bush)

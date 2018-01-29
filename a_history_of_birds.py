@@ -110,7 +110,7 @@ if __name__ == "__main__":
 	
 	lights = []
 	light = li.light((0, 1000, -7000), (0.4, 0.4, 0.4))
-	# lights.append(light)
+	lights.append(light)
 	lights.append(li.light((400.0, lamp_test_y_1 + 15.0, 400.0), (2.0, 0.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((370.0, lamp_test_y_2 + 15.0, 300.0), (0.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((293.0, lamp_test_y_3 + 15.0, 305.0), (2.0, 2.0, 0.0), (1.0, 0.01, 0.002)))

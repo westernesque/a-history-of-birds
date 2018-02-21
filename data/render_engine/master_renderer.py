@@ -3,6 +3,7 @@ import data.shaders.static_shader as ss
 import data.shaders.terrain_shader as ts
 import data.render_engine.entity_renderer as er
 import data.render_engine.terrain_renderer as tr
+import data.skybox.skybox_renderer as sr
 import numpy
 
 class master_renderer():
@@ -17,13 +18,14 @@ class master_renderer():
 	entities = {}
 	terrains = []
 	
-	def __init__(self, display):
+	def __init__(self, display, loader):
 		self.enable_culling()
 		self.entity_shader = ss.static_shader()
 		self.terrain_shader = ts.terrain_shader()
 		projection_matrix = self.create_projection_matrix(display)
 		self.entity_renderer = er.entity_renderer(self.entity_shader, display, projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, projection_matrix)
+		self.skybox_renderer = sr.skybox_renderer(loader, projection_matrix)
 	def render(self, lights, camera):
 		self.prepare()
 		self.entity_shader.start()
@@ -38,6 +40,7 @@ class master_renderer():
 		self.terrain_shader.load_view_matrix(camera)
 		self.terrain_renderer.render(self.terrains)
 		self.terrain_shader.stop()
+		self.skybox_renderer.render(camera)
 		del self.terrains[:]
 		self.entities.clear()
 	def prepare(self):

@@ -8,7 +8,7 @@ class gui_renderer():
 		# positions = numpy.array([-1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0], dtype = "float32") #renders upside down
 		# positions = numpy.array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0], dtype = "float32") #renders upside down
 		positions = numpy.array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0], dtype = "float32") #renders upside down
-		self.quad = loader.load_to_vao(positions) #returns raw_model 
+		self.quad = loader.load_to_vao(positions, 2) #returns raw_model 
 		self.shader = gs.gui_shader()
 	def render(self, guis):
 		self.shader.start()

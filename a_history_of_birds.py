@@ -23,7 +23,7 @@ if __name__ == "__main__":
 	display = display.display_manager()
 	numpy.show_config()
 	loader = l.loader()
-	renderer = mr.master_renderer(display.screen)
+	renderer = mr.master_renderer(display.screen, loader)
 	
 	guis = []
 	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))

@@ -36,7 +36,7 @@ class loader():
 			texture = "data\\textures\\res\\" + texture_files[x] + ".png"
 			print texture
 			# texture_data = pygame.image.tostring(pygame.image.load(texture[x]), "RGBA", True)
-			texture_data = pygame.image.tostring(pygame.image.load(texture), "RGBA", True)
+			texture_data = pygame.image.tostring(pygame.image.load(texture), "RGBA", False)
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + x, 0, GL_RGBA, pygame.image.load(texture).get_width(), pygame.image.load(texture).get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
 			print "texture file loading: " + str(texture_files[x])
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)

@@ -9,7 +9,7 @@ import numpy
 class master_renderer():
 	FIELD_OF_VIEW = 70.0
 	NEAR_PLANE = 0.1
-	FAR_PLANE = 1000.0
+	FAR_PLANE = 2000.0
 	
 	RED = 0.125
 	GREEN = 0.698

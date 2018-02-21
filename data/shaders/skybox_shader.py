@@ -15,4 +15,7 @@ class skybox_shader(sp.shader_program):
 		super(skybox_shader, self).load_matrix(self.location_projection_matrix, matrix)
 	def load_view_matrix(self, camera):
 		matrix = m.maths().create_view_matrix(camera)
+		matrix[3][0] = 0.0
+		matrix[3][1] = 0.0
+		matrix[3][2] = 0.0
 		super(skybox_shader, self).load_matrix(self.location_view_matrix, matrix)

@@ -24,3 +24,5 @@ class skybox_renderer():
 		glDisableVertexAttribArray(0)
 		glBindVertexArray(0)
 		self.shader.stop()
+	def clean_up(self):
+		self.shader.clean_up()

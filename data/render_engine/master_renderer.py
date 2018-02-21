@@ -62,6 +62,7 @@ class master_renderer():
 	def clean_up(self):
 		self.entity_shader.clean_up()
 		self.terrain_shader.clean_up()
+		self.skybox_renderer.clean_up()
 	def create_projection_matrix(self, display):
 		aspect_ratio = float(display.get_width()) / float(display.get_height())
 		y_scale = float((1.0 / (numpy.tan(numpy.radians(self.FIELD_OF_VIEW / 2.0)))) * aspect_ratio)

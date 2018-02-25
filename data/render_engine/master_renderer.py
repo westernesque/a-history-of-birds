@@ -11,9 +11,12 @@ class master_renderer():
 	NEAR_PLANE = 0.1
 	FAR_PLANE = 2000.0
 	
-	RED = 0.125
-	GREEN = 0.698
-	BLUE = 0.667
+	# RED = 0.125
+	# GREEN = 0.698
+	# BLUE = 0.667	
+	RED = 0.590
+	GREEN = 0.669
+	BLUE = 0.701
 	
 	entities = {}
 	terrains = []
@@ -26,7 +29,7 @@ class master_renderer():
 		self.entity_renderer = er.entity_renderer(self.entity_shader, display, projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, projection_matrix)
 		self.skybox_renderer = sr.skybox_renderer(loader, projection_matrix)
-	def render(self, lights, camera):
+	def render(self, lights, camera, clock):
 		self.prepare()
 		self.entity_shader.start()
 		self.entity_shader.load_sky_color(self.RED, self.GREEN, self.BLUE)
@@ -40,7 +43,7 @@ class master_renderer():
 		self.terrain_shader.load_view_matrix(camera)
 		self.terrain_renderer.render(self.terrains)
 		self.terrain_shader.stop()
-		self.skybox_renderer.render(camera)
+		self.skybox_renderer.render(camera, self.RED, self.GREEN, self.BLUE, clock)
 		del self.terrains[:]
 		self.entities.clear()
 	def prepare(self):

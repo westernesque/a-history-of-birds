@@ -141,7 +141,7 @@ if __name__ == "__main__":
 			renderer.process_entity(bush)
 		for fern in texture_atlus_test_list:
 			renderer.process_entity(fern)
-		renderer.render(lights, camera)
+		renderer.render(lights, camera, clock)
 		gui_renderer.render(guis)
 		display.update_display()
 		for event in pygame.event.get():

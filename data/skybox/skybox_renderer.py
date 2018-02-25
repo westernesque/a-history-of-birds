@@ -13,9 +13,10 @@ class skybox_renderer():
 		self.shader.start()
 		self.shader.load_projection_matrix(projection_matrix)
 		self.shader.stop()
-	def render(self, camera):
+	def render(self, camera, r, g, b, clock):
 		self.shader.start()
-		self.shader.load_view_matrix(camera)
+		self.shader.load_view_matrix(camera, clock)
+		self.shader.load_fog_color(r, g, b)
 		glBindVertexArray(self.cube.get_vao_id())
 		glEnableVertexAttribArray(0)
 		glActiveTexture(GL_TEXTURE0)

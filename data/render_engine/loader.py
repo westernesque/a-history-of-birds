@@ -34,11 +34,9 @@ class loader():
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id)
 		for x in range(0, len(texture_files)):
 			texture = "data\\textures\\res\\" + texture_files[x] + ".png"
-			print texture
 			# texture_data = pygame.image.tostring(pygame.image.load(texture[x]), "RGBA", True)
 			texture_data = pygame.image.tostring(pygame.image.load(texture), "RGBA", False)
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + x, 0, GL_RGBA, pygame.image.load(texture).get_width(), pygame.image.load(texture).get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
-			print "texture file loading: " + str(texture_files[x])
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
@@ -57,7 +55,6 @@ class loader():
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, texture_id)	
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pygame.image.load(texture).get_width(), pygame.image.load(texture).get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
-		print str(file_name) + ": " + str(pygame.image.load(texture).get_width()) + " x " + str(pygame.image.load(texture).get_height())
 		glGenerateMipmap(GL_TEXTURE_2D)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.0)

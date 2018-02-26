@@ -1,5 +1,5 @@
 import data.shaders.skybox_shader as s
-import numpy
+import numpy, pygame
 from OpenGL.GL import *
 
 class skybox_renderer():
@@ -28,10 +28,29 @@ class skybox_renderer():
 		glBindVertexArray(0)
 		self.shader.stop()
 	def bind_textures(self):
+		time = pygame.time.get_ticks()
+		time = time % 24000
+		blend_factor = 0.0
+		if time >= 0 and time < 5000:
+			texture_1 = self.night_texture
+			texture_2 = self.night_texture
+			blend_factor = float(float((time - 0)) / (5000 - 0))
+		elif time >= 5000 and time < 8000:
+			texture_1 = self.night_texture
+			texture_2 = self.day_texture
+			blend_factor = float(float((time - 5000)) / (8000 - 5000))
+		elif time >= 8000 and time < 21000:
+			texture_1 = self.day_texture
+			texture_2 = self.day_texture
+			blend_factor = float(float((time - 8000)) / (21000 - 8000))
+		else:
+			texture_1 = self.day_texture
+			texture_2 = self.night_texture
+			blend_factor = float(float((time - 21000)) / (24000 - 21000))
 		glActiveTexture(GL_TEXTURE0)
-		glBindTexture(GL_TEXTURE_CUBE_MAP, self.day_texture)
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture_1)
 		glActiveTexture(GL_TEXTURE1)
-		glBindTexture(GL_TEXTURE_CUBE_MAP, self.night_texture)
-		self.shader.load_blend_factor(0.5)
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture_2)
+		self.shader.load_blend_factor(blend_factor)
 	def clean_up(self):
 		self.shader.clean_up()

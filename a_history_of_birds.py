@@ -23,7 +23,7 @@ if __name__ == "__main__":
 	display = display.display_manager()
 	numpy.show_config()
 	loader = l.loader()
-	renderer = mr.master_renderer(display.screen, loader)
+	renderer = mr.master_renderer(display.screen, loader) 
 	
 	guis = []
 	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
@@ -31,7 +31,6 @@ if __name__ == "__main__":
 	guis.append(gui_one)
 	guis.append(gui_two)
 	gui_renderer = gr.gui_renderer(loader)
-	print "length of guis list: " + str(len(guis))
 	
 	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
@@ -117,8 +116,6 @@ if __name__ == "__main__":
 	# lights.append(li.light((-200.0, 10.0, -200.0), (10.0, 0.0, 0.0)))
 	# lights.append(li.light((200.0, 10.0, 200.0), (0.0, 0.0, 10.0)))
 	
-	print "length of entity_list: " + str(len(entity_list))
-	print "length of lights list: " + str(len(lights))
 		# PERFORMANCE CHECKS... 
 		### 1.) verify that fps of pygame is accurate. 
 		### 2.) see about reducing the amount of time numpy.dot takes?
@@ -133,7 +130,6 @@ if __name__ == "__main__":
 		camera.move()
 		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
-		# gui_renderer.render(guis)
 		for entity in entity_list:
 			# entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)

@@ -1,6 +1,6 @@
 import data.shaders.shader_program as sp
 import data.tools.maths as m
-import pygame, numpy
+import numpy
 
 class skybox_shader(sp.shader_program):
 	VERTEX_FILE = "data\\shaders\\skybox_vertex_shader.txt"

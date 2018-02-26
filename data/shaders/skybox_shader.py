@@ -13,12 +13,20 @@ class skybox_shader(sp.shader_program):
 		self.location_projection_matrix = super(skybox_shader, self).get_uniform_location("projection_matrix")
 		self.location_view_matrix = super(skybox_shader, self).get_uniform_location("view_matrix")
 		self.location_fog_color = super(skybox_shader, self).get_uniform_location("fog_color")
+		self.location_cube_map = super(skybox_shader, self).get_uniform_location("cube_map")
+		self.location_cube_map_2 = super(skybox_shader, self).get_uniform_location("cube_map_2")
+		self.location_blend_factor = super(skybox_shader, self).get_uniform_location("blend_factor")
 	def bind_all_attributes(self):
 		super(skybox_shader, self).bind_attribute(0, "position")
 	def load_fog_color(self, r, g, b):
 		super(skybox_shader, self).load_3d_vector(self.location_fog_color, (r, g, b))
 	def load_projection_matrix(self, matrix):
 		super(skybox_shader, self).load_matrix(self.location_projection_matrix, matrix)
+	def load_blend_factor(self, blend_factor):
+		super(skybox_shader, self).load_float(self.location_blend_factor, blend_factor)
+	def connect_texture_units(self):
+		super(skybox_shader, self).load_int(self.location_cube_map, 0)
+		super(skybox_shader, self).load_int(self.location_cube_map_2, 1)
 	def load_view_matrix(self, camera, clock):
 		matrix = m.maths().create_view_matrix(camera)
 		matrix[3][0] = 0.0

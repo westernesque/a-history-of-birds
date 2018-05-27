@@ -1,13 +1,5 @@
 import pygame, numpy, random
-import data.render_engine.display_manager as display
-import data.render_engine.loader as l
-import data.render_engine.master_renderer as mr
-import data.render_engine.light as li
-import data.obj_loader.obj_file_loader as o
-import data.render_engine.camera as c
-import data.render_engine.third_person_camera as tpc
-#import data.shaders.static_shader as ss
-import data.tools.mouse_picker as mp
+import data.tools.scene_manager as sm
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
 import data.terrains.terrain as t
@@ -17,31 +9,16 @@ import data.entities.entity as e
 import data.entities.player as p
 import data.guis.gui_texture as gt
 import data.guis.gui_renderer as gr
+import data.render_engine.display_manager as display
+import data.render_engine.loader as l
+import data.render_engine.master_renderer as mr
+import data.render_engine.light as li
+import data.obj_loader.obj_file_loader as o
+import data.render_engine.camera as c
+import data.render_engine.third_person_camera as tpc
 
-if __name__ == "__main__":
-	gameRunning = True
-	clock = pygame.time.Clock()
-	display = display.display_manager()
-	# numpy.show_config()
-	loader = l.loader()
-	renderer = mr.master_renderer(display.screen, loader) 
-	
-	'''
-	PERFORMANCE CHECKS... 
-	1.) verify that fps of pygame is accurate. 
-	2.) see about reducing the amount of time numpy.dot takes? <<-- 
-	3.) look into high CPU usage for numpy in general.
-	4.) create a new scene_manager & state_manager
-	5.) maybe have an object_list to hold the lists? // dictionary
-	'''
-	
+def test_scene(screen, obj_list):	
 	guis = []
-	entity_list = []
-	bush_list = []
-	texture_atlus_test_list = []
-	lights = []
-	lamp_list = []
-	
 	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
 	gui_two = gt.gui_texture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
 	guis.append(gui_one)
@@ -60,20 +37,25 @@ if __name__ == "__main__":
 	
 	textured_bush.get_texture().set_has_transparency(False)
 	textured_bush.get_texture().set_use_fake_lighting(False)
-	textured_bush.get_texture().set_shine_damper(5.0)
-	textured_bush.get_texture().set_reflectivity(10.0)
+	# textured_bush.get_texture().set_shine_damper(0.5)
+	# textured_bush.get_texture().set_reflectivity(10.0)
 	
 	texture_atlas_test = mt.model_texture(loader.load_texture("fern"))
 	texture_atlas_test.set_number_of_rows(2)
 	fern = o.obj_file_loader().load_obj("data\\models\\res\\fern.obj")
 	fern_model = loader.load_to_vao(fern.get_vertices(), fern.get_texture_coordinates(), fern.get_normals(), fern.get_indices())
+	# texture_atlas_test_fern = tm.textured_model(fern_model, mt.model_texture(loader.load_texture("fern")))
 	texture_atlas_test_fern = tm.textured_model(fern_model, texture_atlas_test)
 	texture_atlas_test_fern.get_texture().set_has_transparency(True)
 	texture_atlas_test_fern.get_texture().set_use_fake_lighting(False)
+	# texture_atlas_test_fern.get_texture().set_shine_damper(0.1)
+	# texture_atlas_test_fern.get_texture().set_reflectivity(100.0)
 	
 	player_raw_model = o.obj_file_loader().load_obj("data\\models\\res\\bunny.obj")
 	player_model = loader.load_to_vao(player_raw_model.get_vertices(), player_raw_model.get_texture_coordinates(), player_raw_model.get_normals(), player_raw_model.get_indices())
 	textured_player_model = tm.textured_model(player_model, mt.model_texture(loader.load_texture("hmm")))
+	# textured_player_model.get_texture().set_shine_damper(0.5)
+	# textured_player_model.get_texture().set_reflectivity(10.5)
 	player = p.player(textured_player_model, (400.0 , 0.0, 400.0), 0.0, 0.0, 0.0, 1.0)
 	
 	t_background_texture = tt.terrain_texture(loader.load_texture("leaf"))
@@ -86,6 +68,10 @@ if __name__ == "__main__":
 	t_blend_map = tt.terrain_texture(loader.load_texture("blend_map"))
 	
 	terrain = t.terrain(0.0, 0.0, loader, t_terrain_texture_pack, t_blend_map, "height_map")
+	
+	entity_list = []
+	bush_list = []
+	texture_atlus_test_list = []
 	
 	lamp = o.obj_file_loader().load_obj("data\\models\\res\\lamp.obj")
 	lamp_model = loader.load_to_vao(lamp.get_vertices(), lamp.get_texture_coordinates(), lamp.get_normals(), lamp.get_indices())
@@ -110,53 +96,26 @@ if __name__ == "__main__":
 	lamp_test_y_2 = terrain.get_terrain_height(370.0, 300.0)
 	lamp_test_y_3 = terrain.get_terrain_height(293.0, 305.0)
 	
-	lamp_list.append(e.entity(textured_lamp, (400.0, lamp_test_y_1, 400.0), 0, 0, 0, 1))	
-	lamp_list.append(e.entity(textured_lamp, (370.0, lamp_test_y_2, 300.0), 0, 0, 0, 1))	
-	lamp_list.append(e.entity(textured_lamp, (293.0, lamp_test_y_3, 305.0), 0, 0, 0, 1))	
+	entity_list.append(e.entity(textured_lamp, (400.0, lamp_test_y_1, 400.0), 0, 0, 0, 1))	
+	entity_list.append(e.entity(textured_lamp, (370.0, lamp_test_y_2, 300.0), 0, 0, 0, 1))	
+	entity_list.append(e.entity(textured_lamp, (293.0, lamp_test_y_3, 305.0), 0, 0, 0, 1))	
 	
+	lights = []
 	light = li.light((0, 1000, -7000), (0.4, 0.4, 0.4))
 	lights.append(light)
 	lights.append(li.light((400.0, lamp_test_y_1 + 15.0, 400.0), (2.0, 0.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((370.0, lamp_test_y_2 + 15.0, 300.0), (0.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((293.0, lamp_test_y_3 + 15.0, 305.0), (2.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
+	# lights.append(li.light((-200.0, 10.0, -200.0), (10.0, 0.0, 0.0)))
+	# lights.append(li.light((200.0, 10.0, 200.0), (0.0, 0.0, 10.0)))
 	
+		# PERFORMANCE CHECKS... 
+		### 1.) verify that fps of pygame is accurate. 
+		### 2.) see about reducing the amount of time numpy.dot takes?
+		### 3.) look into high CPU usage for numpy in general.
+		####
 	camera = tpc.third_person_camera(player)
-	
-	mouse_picker = mp.mouse_picker(camera, renderer.get_projection_matrix(), display.screen, terrain)
-	
-	while gameRunning == True:
-		clock.tick(60)
-		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
-		player.move(display, terrain)
-		camera.move()
-		mouse_picker.update()
-		terrain_point = mouse_picker.get_current_terrain_point()
-		# if numpy.all(terrain_point) != None:
-			# lamp_list[0].set_position(terrain_point)
-			# lights[0].set_position((terrain_point[0], terrain_point[1] + 15, terrain_point[2]))
-		print "terrain_point point: " + str(terrain_point)
-		renderer.process_entity(player)
-		renderer.process_terrain(terrain)
-		for entity in entity_list:
-			entity.increase_rotation(1.0, 1.0, 0.0)
-			renderer.process_entity(entity)
-		for lamp in lamp_list:
-			renderer.process_entity(lamp)
-		for bush in bush_list:
-			renderer.process_entity(bush)
-		for fern in texture_atlus_test_list:
-			renderer.process_entity(fern)
-		renderer.render(lights, camera, clock)
-		# gui_renderer.render(guis)
-		display.update_display()
-		for event in pygame.event.get():
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
-				if numpy.all(terrain_point) != None:
-					lamp_list[0].set_position(terrain_point)
-					lights[0].set_position((terrain_point[0], terrain_point[1] + 15, terrain_point[2]))
-			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-				gui_renderer.clean_up()
-				renderer.clean_up()
-				loader.clean_up()
-				display.close_display()
-				gameRunning = False
+
+	func_status = "incomplete"
+	next_func = None
+	return func_status, next_func

@@ -5,7 +5,7 @@ from OpenGL.GL import *
 class third_person_camera():
 	def __init__(self, player):
 		self.player = player
-		self.angle_around_player = 10.0
+		self.angle_around_player = 0.0
 		self.distance_from_player = 100.0
 		self.position = (0.0, 0.0, 0.0)
 		self.pitch = -20.0

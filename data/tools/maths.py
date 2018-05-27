@@ -6,32 +6,21 @@ class maths():
 		l1 = float((point_2[2] - point_3[2]) * (position[0] - point_3[0]) + (point_3[0] - point_2[0]) * (position[1] - point_3[2])) / det
 		l2 = float((point_3[2] - point_1[2]) * (position[0] - point_3[0]) + (point_1[0] - point_3[0]) * (position[1] - point_3[2])) / det
 		l3 = float(1.0) - l1 - l2
-		# print "l1, l2, l3: " + str(l1) + ", " + str(l2) + ", " + str(l3)
 		return l1 * point_1[1] + l2 * point_2[1] + l3 * point_3[1]	
-	# def create_transformation_matrix(self, translation, rotation_x, rotation_y, rotation_z, scale):
 	def create_transformation_matrix(self, *args):
 		matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 		if len(args) == 5:
-		# matrix = numpy.identity(4)
-			# matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-			# matrix = self.translate(translation, matrix, matrix)
 			matrix = self.translate(args[0], matrix, matrix)
-			# matrix = self.rotate(numpy.radians(rotation_x), (1, 0, 0), matrix, matrix)
 			matrix = self.rotate(numpy.radians(args[1]), (1, 0, 0), matrix, matrix)
-			# matrix = self.rotate(numpy.radians(rotation_y), (0, 1, 0), matrix, matrix)
 			matrix = self.rotate(numpy.radians(args[2]), (0, 1, 0), matrix, matrix)
-			# matrix = self.rotate(numpy.radians(rotation_z), (0, 0, 1), matrix, matrix)
 			matrix = self.rotate(numpy.radians(args[3]), (0, 0, 1), matrix, matrix)
-			# matrix = self.scale(scale, matrix, matrix)
 			matrix = self.scale(args[4], matrix, matrix)
-		# matrix = self.translate(translation, matrix, matrix)
 		if len(args) == 2:
 			matrix = self.translate(args[0], matrix, matrix)
 			matrix = self.scale(args[1], matrix, matrix)
 		return matrix
 	def create_view_matrix(self, camera):
-		# view_matrix = numpy.identity(4)
-		view_matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+		view_matrix = numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype= "float32")
 		view_matrix = self.rotate(numpy.radians(camera.get_pitch()), (1, 0, 0), view_matrix, view_matrix)
 		view_matrix = self.rotate(numpy.radians(camera.get_yaw()), (0, 1, 0), view_matrix, view_matrix)
 		view_matrix = self.rotate(numpy.radians(camera.get_roll()), (0, 0, 1), view_matrix, view_matrix)
@@ -44,9 +33,7 @@ class maths():
 			t_x, t_y, t_z = translation[0], translation[1], translation[2]
 		if len(translation) == 2:
 			t_x, t_y, t_z = translation[0], translation[1], 0
-		#translate_matrix = numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [t_x, t_y, t_z, 1]], dtype = "float32")
 		translate_matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [t_x, t_y, t_z, 1]]
-		# out_matrix = numpy.dot(in_matrix, translate_matrix)
 		out_matrix = numpy.dot(translate_matrix, in_matrix)
 		return out_matrix
 	def rotate(self, radians, axis, in_matrix, out_matrix):

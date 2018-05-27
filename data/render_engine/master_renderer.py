@@ -25,10 +25,10 @@ class master_renderer():
 		self.enable_culling()
 		self.entity_shader = ss.static_shader()
 		self.terrain_shader = ts.terrain_shader()
-		projection_matrix = self.create_projection_matrix(display)
-		self.entity_renderer = er.entity_renderer(self.entity_shader, display, projection_matrix)
-		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, projection_matrix)
-		self.skybox_renderer = sr.skybox_renderer(loader, projection_matrix)
+		self.projection_matrix = self.create_projection_matrix(display)
+		self.entity_renderer = er.entity_renderer(self.entity_shader, display, self.projection_matrix)
+		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, self.projection_matrix)
+		self.skybox_renderer = sr.skybox_renderer(loader, self.projection_matrix)
 	def render(self, lights, camera, clock):
 		self.prepare()
 		self.entity_shader.start()
@@ -79,6 +79,8 @@ class master_renderer():
 		projection_matrix[3][2] = -((2.0 * self.FAR_PLANE * self.NEAR_PLANE) / frustum_length)
 		projection_matrix[3][3] = 0
 		return projection_matrix
+	def get_projection_matrix(self):
+		return self.projection_matrix
 	def enable_culling(self):
 		glEnable(GL_CULL_FACE)
 		glCullFace(GL_BACK)

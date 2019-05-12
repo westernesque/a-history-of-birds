@@ -8,7 +8,7 @@ class third_person_camera():
 		self.angle_around_player = 0.0
 		self.distance_from_player = 100.0
 		self.position = (0.0, 0.0, 0.0)
-		self.pitch = -20.0
+		self.pitch = -90.0
 		self.yaw = 0
 		self.roll = 0
 	def move(self):
@@ -24,10 +24,12 @@ class third_person_camera():
 	def calculate_zoom(self, mouse_keys, rel_mouse_pos):
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_z] == True:
-			zoom_level = 1.0
+			# zoom_level = 1.0
+			zoom_level = 5.0
 			self.distance_from_player -= zoom_level
 		elif keys[pygame.K_x] == True:
-			zoom_level = 1.0
+			# zoom_level = 1.0
+			zoom_level = 5.0
 			self.distance_from_player += zoom_level
 	def calculate_pitch(self, mouse_keys, rel_mouse_pos):
 		if mouse_keys[2] == True:
@@ -38,7 +40,8 @@ class third_person_camera():
 				pitch_change = rel_mouse_pos[1] * 0.1
 				self.pitch += pitch_change
 	def calculate_rotation(self, mouse_keys, rel_mouse_pos):
-		if mouse_keys[0] == True:
+		# if mouse_keys[0] == True:
+		if mouse_keys[0] == True and 0 == 1:
 			if rel_mouse_pos[0] > 0:
 				angle_change = rel_mouse_pos[0] * 0.3
 				self.angle_around_player -= angle_change

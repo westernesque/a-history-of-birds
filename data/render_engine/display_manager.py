@@ -18,6 +18,5 @@ class display_manager():
 		return self.delta
 	def close_display(self):
 		pygame.quit()
-		sys.exit()
 	def get_current_time(self):
 		return int(round(time.time() * 1000))

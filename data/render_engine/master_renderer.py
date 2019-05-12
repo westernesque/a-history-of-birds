@@ -43,7 +43,7 @@ class master_renderer():
 		self.terrain_shader.load_view_matrix(camera)
 		self.terrain_renderer.render(self.terrains)
 		self.terrain_shader.stop()
-		self.skybox_renderer.render(camera, self.RED, self.GREEN, self.BLUE, clock)
+		# self.skybox_renderer.render(camera, self.RED, self.GREEN, self.BLUE, clock)
 		del self.terrains[:]
 		self.entities.clear()
 	def prepare(self):

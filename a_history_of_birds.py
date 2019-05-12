@@ -7,7 +7,7 @@ import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.render_engine.third_person_camera as tpc
 #import data.shaders.static_shader as ss
-import data.tools.mouse_picker as mp
+import data.tools.mouse_picker_new as mp
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
 import data.terrains.terrain as t
@@ -32,11 +32,12 @@ if __name__ == "__main__":
 	2.) see about reducing the amount of time numpy.dot takes? <<-- 
 	3.) look into high CPU usage for numpy in general.
 	4.) create a new scene_manager & state_manager
-	5.) maybe have an object_list to hold the lists? // dictionary
+	5.) maybe have an object_list to hold the lists? // dictionary duh
 	'''
 	
 	guis = []
 	entity_list = []
+	waypoint_list = []
 	bush_list = []
 	texture_atlus_test_list = []
 	lights = []
@@ -53,6 +54,13 @@ if __name__ == "__main__":
 	cube_model = loader.load_to_vao(cube.get_vertices(), cube.get_texture_coordinates(), cube.get_normals(), cube.get_indices())
 	textured_cube = tm.textured_model(cube_model, mt.model_texture(loader.load_texture("large_test")))
 	textured_cube.get_texture().set_has_transparency(False)
+	
+	waypoint_cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
+	waypoint_cube_model = loader.load_to_vao(waypoint_cube.get_vertices(), waypoint_cube.get_texture_coordinates(), waypoint_cube.get_normals(), waypoint_cube.get_indices())
+	textured_waypoint_cube = tm.textured_model(waypoint_cube_model, mt.model_texture(loader.load_texture("hmm")))
+	textured_waypoint_cube.get_texture().set_has_transparency(False)
+	waypoint_list.append(e.entity(textured_waypoint_cube, (0.0, 400.0, 0.0), 0.0, 0.0, 0.0, 100.0))
+	
 	
 	bush = o.obj_file_loader().load_obj("data\\models\\res\\pine.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
@@ -107,6 +115,7 @@ if __name__ == "__main__":
 		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 	
 	lamp_test_y_1 = terrain.get_terrain_height(400.0, 400.0)
+	print "terrain height for lamp_test_y_1: " + str(lamp_test_y_1)
 	lamp_test_y_2 = terrain.get_terrain_height(370.0, 300.0)
 	lamp_test_y_3 = terrain.get_terrain_height(293.0, 305.0)
 	
@@ -130,13 +139,12 @@ if __name__ == "__main__":
 		player.move(display, terrain)
 		camera.move()
 		mouse_picker.update()
+		print "mouse picker current ray: " +  str(mouse_picker.get_current_ray())
 		terrain_point = mouse_picker.get_current_terrain_point()
-		# if numpy.all(terrain_point) != None:
-			# lamp_list[0].set_position(terrain_point)
-			# lights[0].set_position((terrain_point[0], terrain_point[1] + 15, terrain_point[2]))
-		print "terrain_point point: " + str(terrain_point)
 		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
+		for entity in waypoint_list:
+			renderer.process_entity(entity)
 		for entity in entity_list:
 			entity.increase_rotation(1.0, 1.0, 0.0)
 			renderer.process_entity(entity)
@@ -149,11 +157,22 @@ if __name__ == "__main__":
 		renderer.render(lights, camera, clock)
 		# gui_renderer.render(guis)
 		display.update_display()
+		mouse_keys = pygame.mouse.get_pressed()
+		keys = pygame.key.get_pressed()
+		if mouse_keys[0] == True: 
+			print "terrain_point point: " + str(terrain_point)
+			# print "mouse current_ray: " + str(mouse_picker.current_ray)
+			print "lamp position: " + str(lamp_list[0].position)
+			print "camera position: " + str(camera.position) + "\n"
+			print "waypoint position" + str(waypoint_list[0].position) + "\n"
+			#print "get_point_on_ray: " + str(mouse_picker.start + mouse_picker.scaled_ray)
+			if numpy.all(terrain_point) != None:
+				waypoint_list[0].set_position(terrain_point)
+				lamp_list[0].set_position(terrain_point)
+				lights[1].set_position(terrain_point)
 		for event in pygame.event.get():
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
-				if numpy.all(terrain_point) != None:
-					lamp_list[0].set_position(terrain_point)
-					lights[0].set_position((terrain_point[0], terrain_point[1] + 15, terrain_point[2]))
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
+				camera.position = lamp_list[0].position
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
 				gui_renderer.clean_up()
 				renderer.clean_up()

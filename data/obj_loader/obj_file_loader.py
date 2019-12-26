@@ -1,5 +1,5 @@
-import vertex as v
-import model_data as md
+import data.obj_loader.vertex as v
+import data.obj_loader.model_data as md
 import numpy
 
 class obj_file_loader():

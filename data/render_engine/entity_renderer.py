@@ -38,7 +38,7 @@ class entity_renderer():
 		glDisableVertexAttribArray(2)
 		glBindVertexArray(0)
 	def prepare_entity(self, entity):
-		transformation_matrix = m.maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
+		transformation_matrix = m.Maths().create_transformation_matrix(entity.get_position(), entity.get_rotation_x(), entity.get_rotation_y(), entity.get_rotation_z(), entity.get_scale())
 		self.shader.load_transformation_matrix(transformation_matrix)
 		self.shader.load_offset(entity.get_texture_x_offset(), entity.get_texture_y_offset())
 	def enable_culling(self):

@@ -28,10 +28,10 @@ class skybox_shader(sp.shader_program):
 		super(skybox_shader, self).load_int(self.location_cube_map, 0)
 		super(skybox_shader, self).load_int(self.location_cube_map_2, 1)
 	def load_view_matrix(self, camera, clock):
-		matrix = m.maths().create_view_matrix(camera)
+		matrix = m.Maths().create_view_matrix(camera)
 		matrix[3][0] = 0.0
 		matrix[3][1] = 0.0
 		matrix[3][2] = 0.0
 		self.current_rotation += self.ROTATION_SPEED / clock.get_time()
-		matrix = m.maths().rotate(numpy.radians(self.current_rotation), (0, 1, 0), matrix, matrix)
+		matrix = m.Maths().rotate(numpy.radians(self.current_rotation), (0, 1, 0), matrix, matrix)
 		super(skybox_shader, self).load_matrix(self.location_view_matrix, matrix)

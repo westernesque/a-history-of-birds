@@ -37,7 +37,7 @@ class camera():
 		if keys[pygame.K_l] == True and keys[pygame.K_LSHIFT] == False:
 			self.roll += 0.2
 		self.position = tuple(self.position)
-		print self.position
+#		print self.position
 		pass
 	def get_position(self):
 		return self.position

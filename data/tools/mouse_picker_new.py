@@ -3,7 +3,7 @@ import pygame, numpy
 
 class mouse_picker():
 	current_ray = None
-	RAY_RANGE = 600.0
+	RAY_RANGE = 1000.0
 	RECURSION_COUNT = 200
 
 	def __init__(self, camera, projection_matrix, display, terrain):
@@ -12,7 +12,7 @@ class mouse_picker():
 		self.display = display
 		self.terrain = terrain
 		self.current_terrain_point = None
-		self.count = -1
+		self.count = 0
 	
 	def get_current_terrain_point(self):
 		return self.current_terrain_point
@@ -21,7 +21,7 @@ class mouse_picker():
 		return self.current_ray
 	
 	def update(self):
-		self.view_matrix = m.maths().create_view_matrix(self.camera)
+		self.view_matrix = m.Maths().create_view_matrix(self.camera)
 		self.current_ray = self.calculate_mouse_ray()
 		if self.intersection_in_range(0.0, self.RAY_RANGE, self.current_ray):
 			self.current_terrain_point = self.binary_search(0, 0.0, self.RAY_RANGE, self.current_ray)
@@ -31,7 +31,7 @@ class mouse_picker():
 	def calculate_mouse_ray(self):
 		mouse_x, mouse_y = float(pygame.mouse.get_pos()[0]), float(pygame.mouse.get_pos()[1])
 		normalized_device_coordinates = self.get_normalized_device_coordinates(mouse_x, mouse_y)
-		clip_coordinates = (normalized_device_coordinates[0], normalized_device_coordinates[1], -1.0, 1.0)
+		clip_coordinates = (normalized_device_coordinates[0], normalized_device_coordinates[1], 1.0, 1.0)
 		eye_coordinates = self.to_eye_coordinates(clip_coordinates)
 		world_ray = self.to_world_coordinates(eye_coordinates)
 		return world_ray
@@ -43,30 +43,34 @@ class mouse_picker():
 	
 	def to_eye_coordinates(self, clip_coordinates):
 		inverted_projection_matrix = numpy.linalg.inv(self.projection_matrix)
-		eye_coordinates = numpy.dot(inverted_projection_matrix, clip_coordinates)
-		#eye_coordinates = numpy.dot(clip_coordinates, inverted_projection_matrix)
+		#eye_coordinates = numpy.dot(inverted_projection_matrix, clip_coordinates)
+		eye_coordinates = numpy.dot(self.projection_matrix, clip_coordinates)
+		#eye_coordinates = inverted_projection_matrix @ clip_coordinates
 		return (eye_coordinates[0], eye_coordinates[1], -1.0, 0.0)
 
 	def to_world_coordinates(self, eye_coordinates):
-		#inverted_view_matrix = self.view_matrix
 		inverted_view_matrix = numpy.linalg.inv(self.view_matrix)
+		#ray_world_coordinates = inverted_view_matrix @ eye_coordinates
 		ray_world_coordinates = numpy.dot(inverted_view_matrix, eye_coordinates)
-		#ray_world_coordinates = numpy.dot(eye_coordinates, inverted_view_matrix)
+		#ray_world_coordinates = numpy.dot(self.view_matrix, eye_coordinates)
 		mouse_ray = (ray_world_coordinates[0], ray_world_coordinates[1], ray_world_coordinates[2])
-		mouse_ray = numpy.linalg.norm([mouse_ray], None, 0)
+		mouse_ray = numpy.linalg.norm(mouse_ray[0]), numpy.linalg.norm(mouse_ray[1]), numpy.linalg.norm(mouse_ray[2])
 		return mouse_ray
 
 	def get_point_on_ray(self, ray, distance):
 		camera_position = self.camera.get_position()
 		start = (camera_position[0], camera_position[1], camera_position[2])
-		#scaled_ray = (ray[0] + distance, ray[1] + distance, ray[2] + distance)
+		#scaled_ray = (ray[0] / distance, ray[1] / distance, ray[2] / distance)
 		scaled_ray = (ray[0] * distance, ray[1] * distance, ray[2] * distance)
+		#scaled_ray = (ray[0], ray[1], ray[2])
+		return numpy.subtract(start, scaled_ray)
 		#return numpy.add(start, scaled_ray)
-		return numpy.add(start, scaled_ray)
 
 	def binary_search(self, count, start, finish, ray):
 		half = (finish + start) / 2.0
 		#half = start + ((finish - start) / 2.0)
+		#print(count)
+		#print("half: " + str(half))
 		if count >= self.RECURSION_COUNT:
 			end_point = self.get_point_on_ray(ray, half)
 			terrain = self.get_terrain(end_point[0], end_point[2])

@@ -45,5 +45,5 @@ class terrain_renderer():
 		glDisableVertexAttribArray(2)
 		glBindVertexArray(0)
 	def load_model_matrix(self, terrain):
-		transformation_matrix = m.maths().create_transformation_matrix((terrain.get_position_x(), 0, terrain.get_position_z()), 0, 0, 0, 1)
+		transformation_matrix = m.Maths().create_transformation_matrix((terrain.get_position_x(), 0, terrain.get_position_z()), 0, 0, 0, 1)
 		self.shader.load_transformation_matrix(transformation_matrix)

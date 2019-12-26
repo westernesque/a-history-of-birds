@@ -7,7 +7,8 @@ import data.obj_loader.obj_file_loader as o
 import data.render_engine.camera as c
 import data.render_engine.third_person_camera as tpc
 #import data.shaders.static_shader as ss
-import data.tools.mouse_picker_new as mp
+import data.tools.font as font
+import data.tools.mouse_picker as mp
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
 import data.terrains.terrain as t
@@ -21,10 +22,10 @@ import data.guis.gui_renderer as gr
 if __name__ == "__main__":
 	gameRunning = True
 	clock = pygame.time.Clock()
-	display = display.display_manager()
+	display = display.DisplayManager()
 	# numpy.show_config()
-	loader = l.loader()
-	renderer = mr.master_renderer(display.screen, loader) 
+	loader = l.Loader()
+	renderer = mr.MasterRenderer(display.screen, loader)
 	
 	'''
 	PERFORMANCE CHECKS... 
@@ -48,6 +49,10 @@ if __name__ == "__main__":
 	guis.append(gui_one)
 	guis.append(gui_two)
 	gui_renderer = gr.gui_renderer(loader)
+
+	text_vertices = numpy.array([-1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0], dtype="float32")
+	text_indices = numpy.array([0, 1, 3, 3, 1, 2], dtype="float32")
+	text_texture_coords = numpy.array([0, 1, 0, 0, 1, 0, 1, 1], dtype="int32")
 	
 	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")
@@ -99,23 +104,29 @@ if __name__ == "__main__":
 	lamp_model = loader.load_to_vao(lamp.get_vertices(), lamp.get_texture_coordinates(), lamp.get_normals(), lamp.get_indices())
 	textured_lamp = tm.textured_model(lamp_model, mt.model_texture(loader.load_texture("lamp")))
 	textured_lamp.get_texture().set_use_fake_lighting(True)
+
+	text = font.font_texture("windfishers")
+	text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
+	text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
+	text_textured_model = tm.textured_model(text_model, text_texture)
+	text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
 	
-	for i in range(100):
-		x = random.uniform(0.0, 800.0)
-		t_x = random.uniform(0.0, 800.0)
-		z = random.uniform(0.0, 800.0)
-		t_z = random.uniform(0.0, 800.0)
-		rand_y = random.uniform(0.0, 100.0) 
-		y = terrain.get_terrain_height(x, z)
-		t_y = terrain.get_terrain_height(t_x, t_z)
-		rx = random.uniform(0.0, 180)
-		ry = random.uniform(0.0, 180)
-		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
-		bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
-		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
+	# for i in range(100):
+	# 	x = random.uniform(0.0, 800.0)
+	# 	t_x = random.uniform(0.0, 800.0)
+	# 	z = random.uniform(0.0, 800.0)
+	# 	t_z = random.uniform(0.0, 800.0)
+	# 	rand_y = random.uniform(0.0, 100.0)
+	# 	y = terrain.get_terrain_height(x, z)
+	# 	t_y = terrain.get_terrain_height(t_x, t_z)
+	# 	rx = random.uniform(0.0, 180)
+	# 	ry = random.uniform(0.0, 180)
+	# 	entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
+	# 	bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
+	# 	texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 	
 	lamp_test_y_1 = terrain.get_terrain_height(400.0, 400.0)
-	print "terrain height for lamp_test_y_1: " + str(lamp_test_y_1)
+	#print "terrain height for lamp_test_y_1: " + str(lamp_test_y_1)
 	lamp_test_y_2 = terrain.get_terrain_height(370.0, 300.0)
 	lamp_test_y_3 = terrain.get_terrain_height(293.0, 305.0)
 	
@@ -131,7 +142,7 @@ if __name__ == "__main__":
 	
 	camera = tpc.third_person_camera(player)
 	
-	mouse_picker = mp.mouse_picker(camera, renderer.get_projection_matrix(), display.screen, terrain)
+	mouse_picker = mp.MousePicker(camera, renderer.get_projection_matrix(), display.screen, terrain)
 	
 	while gameRunning == True:
 		clock.tick(60)
@@ -139,8 +150,8 @@ if __name__ == "__main__":
 		player.move(display, terrain)
 		camera.move()
 		mouse_picker.update()
-		print "mouse picker current ray: " +  str(mouse_picker.get_current_ray())
-		terrain_point = mouse_picker.get_current_terrain_point()
+#		print "mouse picker current ray: " +  str(mouse_picker.get_current_ray())
+		#terrain_point = mouse_picker.get_current_terrain_point()
 		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
 		for entity in waypoint_list:
@@ -155,21 +166,23 @@ if __name__ == "__main__":
 		for fern in texture_atlus_test_list:
 			renderer.process_entity(fern)
 		renderer.render(lights, camera, clock)
-		# gui_renderer.render(guis)
+		gui_renderer.render(guis)
 		display.update_display()
 		mouse_keys = pygame.mouse.get_pressed()
 		keys = pygame.key.get_pressed()
 		if mouse_keys[0] == True: 
-			print "terrain_point point: " + str(terrain_point)
-			# print "mouse current_ray: " + str(mouse_picker.current_ray)
-			print "lamp position: " + str(lamp_list[0].position)
-			print "camera position: " + str(camera.position) + "\n"
-			print "waypoint position" + str(waypoint_list[0].position) + "\n"
+			#print "terrain_point point: " + str(terrain_point)
+			print("mouse current_ray: " + str(mouse_picker.current_ray))
+			print("plane intersection test: " + str(mouse_picker.intersect_with_y()))
+			print("lamp position: " + str(lamp_list[0].position))
+			#print("camera position: " + str(camera.position) + "\n")
+			#print("waypoint position" + str(waypoint_list[0].position) + "\n")
 			#print "get_point_on_ray: " + str(mouse_picker.start + mouse_picker.scaled_ray)
-			if numpy.all(terrain_point) != None:
-				waypoint_list[0].set_position(terrain_point)
-				lamp_list[0].set_position(terrain_point)
-				lights[1].set_position(terrain_point)
+			#if numpy.all(terrain_point) != None:
+			#waypoint_list[0].set_position(mouse_picker.intersect_with_y())
+			lamp_list[0].set_position(mouse_picker.intersect_with_y())
+			#lights[1].set_position((mouse_picker.intersect_with_y()[0], mouse_picker.intersect_with_y[1] + 15.0, mouse_picker.intersect_with_y[2]))
+			lights[1].set_position((mouse_picker.intersect_with_y()))
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
 				camera.position = lamp_list[0].position

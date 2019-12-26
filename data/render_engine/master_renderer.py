@@ -6,7 +6,7 @@ import data.render_engine.terrain_renderer as tr
 import data.skybox.skybox_renderer as sr
 import numpy
 
-class master_renderer():
+class MasterRenderer:
 	FIELD_OF_VIEW = 70.0
 	NEAR_PLANE = 0.1
 	FAR_PLANE = 2000.0

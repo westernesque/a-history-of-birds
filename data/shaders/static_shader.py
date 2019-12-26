@@ -49,7 +49,7 @@ class static_shader(sp.shader_program):
 	def load_projection_matrix(self, matrix):
 		super(static_shader, self).load_matrix(self.location_projection_matrix, matrix)
 	def load_view_matrix(self, camera):
-		view_matrix = m.maths().create_view_matrix(camera)
+		view_matrix = m.Maths().create_view_matrix(camera)
 		super(static_shader, self).load_matrix(self.location_view_matrix, view_matrix)
 	def load_lights(self, lights):
 		for x in range(0, self.MAX_LIGHTS):

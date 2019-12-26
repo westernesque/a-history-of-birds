@@ -20,10 +20,11 @@ class gui_renderer():
 		for gui in guis:
 			glActiveTexture(GL_TEXTURE0)
 			glBindTexture(GL_TEXTURE_2D, gui.get_texture_id())
-			matrix = m.maths().create_transformation_matrix(gui.get_position(), gui.get_scale())
+			matrix = m.Maths().create_transformation_matrix(gui.get_position(), gui.get_scale())
 			self.shader.load_transformation_matrix(matrix)
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, self.quad.get_vertex_count())
+			# glDrawArrays(GL_TRIANGLE_STRIP, 0, self.quad.get_vertex_count())
 			# glDrawElements(GL_TRIANGLES, self.quad.get_vertex_count(), GL_UNSIGNED_INT, None)
+			glDrawElements(GL_TRIANGLES, int(self.quad.get_vertex_count()), GL_UNSIGNED_INT, None)
 		glEnable(GL_DEPTH_TEST)
 		glDisable(GL_BLEND)
 		glDisableVertexAttribArray(0)

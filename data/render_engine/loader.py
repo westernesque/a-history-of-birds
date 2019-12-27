@@ -55,17 +55,17 @@ class Loader:
         self.textures.append(texture_id)
         return texture_id, texture_data, pygame.image.load(texture).convert()
 
-    def load_pygame_texture(self, texture_data, ix, iy):
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        texture_id = glGenTextures(1)
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, texture_id)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
-        self.textures.append(texture_id)
-        return texture_id, texture_data, ix, iy
+    # def load_pygame_texture(self, texture_data, ix, iy):
+    #     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+    #     texture_id = glGenTextures(1)
+    #     glActiveTexture(GL_TEXTURE0)
+    #     glBindTexture(GL_TEXTURE_2D, texture_id)
+    #     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+    #     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+    #     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+    #     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
+    #     self.textures.append(texture_id)
+    #     return texture_id, texture_data, ix, iy
 
     def clean_up(self):
         for vao in self.vaos:

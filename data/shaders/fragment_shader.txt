@@ -40,6 +40,9 @@ void main(void){
 		float specular_factor = dot(reflected_light_direction, unit_to_camera_vector);
 		specular_factor = max(specular_factor, 0.0);
 		float damped_factor = pow(specular_factor, shine_damper);
+
+		level = floor(damped_factor * levels);
+		damped_factor = level / levels;
 		
 		total_diffuse = total_diffuse + (brightness * light_color[i]) / attenuation_factor;
 		total_specular = total_specular + (damped_factor * reflectivity * light_color[i]) / attenuation_factor;

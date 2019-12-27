@@ -20,6 +20,8 @@ uniform float shine_damper;
 uniform float reflectivity;
 uniform vec3 sky_color;
 
+const float levels = 3.0;
+
 void main(void){
 	
 	vec4 blend_map_color = texture(blend_map, pass_texture_coords);
@@ -45,11 +47,15 @@ void main(void){
 		vec3 unit_light_vector = normalize(to_light_vector[i]);
 		float nDot1 = dot(unit_normal, unit_light_vector);
 		float brightness = max(nDot1, 0.0);
+		float level = floor(brightness * levels);
+		brightness = level / levels;
 		vec3 light_direction = -unit_light_vector;
 		vec3 reflected_light_direction = reflect(light_direction, unit_normal);
 		float specular_factor = dot(reflected_light_direction, unit_to_camera_vector);
 		specular_factor = max(specular_factor, 0.0);
 		float damped_factor = pow(specular_factor, shine_damper);
+		level = floor(damped_factor * levels);
+		damped_factor = level / levels;
 		total_diffuse = total_diffuse + (brightness * light_color[i]) / attenuation_factor;
 		total_specular = total_specular + (damped_factor * reflectivity * light_color[i]) / attenuation_factor;
 	}

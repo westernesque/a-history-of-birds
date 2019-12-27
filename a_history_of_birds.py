@@ -74,7 +74,7 @@ if __name__ == "__main__":
 	textured_bush.get_texture().set_has_transparency(True)
 	textured_bush.get_texture().set_use_fake_lighting(False)
 	textured_bush.get_texture().set_shine_damper(5.0)
-	textured_bush.get_texture().set_reflectivity(10.0)
+	textured_bush.get_texture().set_reflectivity(1.0)
 	
 	texture_atlas_test = mt.model_texture(loader.load_texture("fern"))
 	texture_atlas_test.set_number_of_rows(2)
@@ -105,11 +105,11 @@ if __name__ == "__main__":
 	textured_lamp = tm.textured_model(lamp_model, mt.model_texture(loader.load_texture("lamp")))
 	textured_lamp.get_texture().set_use_fake_lighting(True)
 
-	text = font.font_texture("windfishers")
-	text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
-	text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
-	text_textured_model = tm.textured_model(text_model, text_texture)
-	text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
+	# text = font.font_texture("windfishers")
+	# text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
+	# text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
+	# text_textured_model = tm.textured_model(text_model, text_texture)
+	# text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
 	
 	for i in range(100):
 		x = random.uniform(0.0, 800.0)
@@ -126,7 +126,6 @@ if __name__ == "__main__":
 		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 	
 	lamp_test_y_1 = terrain.get_terrain_height(400.0, 400.0)
-	#print "terrain height for lamp_test_y_1: " + str(lamp_test_y_1)
 	lamp_test_y_2 = terrain.get_terrain_height(370.0, 300.0)
 	lamp_test_y_3 = terrain.get_terrain_height(293.0, 305.0)
 	
@@ -134,7 +133,7 @@ if __name__ == "__main__":
 	lamp_list.append(e.entity(textured_lamp, (370.0, lamp_test_y_2, 300.0), 0, 0, 0, 1))	
 	lamp_list.append(e.entity(textured_lamp, (293.0, lamp_test_y_3, 305.0), 0, 0, 0, 1))	
 	
-	light = li.light((0, 1000, -1000), (0.4, 0.4, 0.4))
+	light = li.light((0, 1000, -7000), (0.4, 0.4, 0.4))
 	lights.append(light)
 	lights.append(li.light((400.0, lamp_test_y_1 + 15.0, 400.0), (2.0, 0.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((370.0, lamp_test_y_2 + 15.0, 300.0), (0.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
@@ -150,8 +149,6 @@ if __name__ == "__main__":
 		player.move(display, terrain)
 		camera.move()
 		mouse_picker.update()
-#		print "mouse picker current ray: " +  str(mouse_picker.get_current_ray())
-		#terrain_point = mouse_picker.get_current_terrain_point()
 		renderer.process_entity(player)
 		renderer.process_terrain(terrain)
 		for entity in waypoint_list:
@@ -181,7 +178,7 @@ if __name__ == "__main__":
 			#if numpy.all(terrain_point) != None:
 			#waypoint_list[0].set_position(mouse_picker.intersect_with_y())
 			lamp_list[0].set_position(mouse_picker.intersect_with_y())
-			#lights[1].set_position((mouse_picker.intersect_with_y()[0], mouse_picker.intersect_with_y[1] + 15.0, mouse_picker.intersect_with_y[2]))
+			# lights[1].set_position((mouse_picker.intersect_with_y()[0], mouse_picker.intersect_with_y[1] + 15.0, mouse_picker.intersect_with_y[2]))
 			lights[1].set_position((mouse_picker.intersect_with_y()))
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_c:

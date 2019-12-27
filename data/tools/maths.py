@@ -47,25 +47,18 @@ class Maths:
     def rotate(self, radians, axis, in_matrix, out_matrix):
         cos = numpy.cos(radians)
         sin = numpy.sin(radians)
-        # rotate_x_matrix = numpy.array([[1, 0, 0, 0], [0, cos, -sin, 0], [0, sin, cos, 0], [0, 0, 0, 1]], dtype = "float32")
         rotate_x_matrix = [[1, 0, 0, 0], [0, cos, -sin, 0], [0, sin, cos, 0], [0, 0, 0, 1]]
-        # rotate_y_matrix = numpy.array([[cos, 0, sin, 0], [0, 1, 0, 0], [-sin, 0, cos, 0], [0, 0, 0, 1]], dtype = "float32")
         rotate_y_matrix = [[cos, 0, sin, 0], [0, 1, 0, 0], [-sin, 0, cos, 0], [0, 0, 0, 1]]
-        # rotate_z_matrix = numpy.array([[cos, -sin, 0, 0], [sin, cos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype = "float32")
         rotate_z_matrix = [[cos, -sin, 0, 0], [sin, cos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
         if axis[0] == 1:
-            # out_matrix = numpy.dot(in_matrix, rotate_x_matrix)
             out_matrix = numpy.dot(rotate_x_matrix, in_matrix)
         if axis[1] == 1:
-            # out_matrix = numpy.dot(in_matrix, rotate_y_matrix)
             out_matrix = numpy.dot(rotate_y_matrix, in_matrix)
         if axis[2] == 1:
-            # out_matrix = numpy.dot(in_matrix, rotate_z_matrix)
             out_matrix = numpy.dot(rotate_z_matrix, in_matrix)
         return out_matrix
 
     def scale(self, scale, in_matrix, out_matrix):
-        # s_x, s_y, s_z = scale, scale, scale
         if type(scale) is int or type(scale) is float:
             scale = scale,
         if len(scale) == 1:
@@ -75,7 +68,5 @@ class Maths:
         if len(scale) == 3:
             s_x, s_y, s_z = scale[0], scale[1], scale[2]
         scale_matrix = numpy.array([[s_x, 0, 0, 0], [0, s_y, 0, 0], [0, 0, s_z, 0], [0, 0, 0, 1]], dtype="float32")
-        # scale_matrix = [[s_x, 0, 0, 0],[0, s_y, 0, 0],[0, 0, s_z, 0],[0, 0, 0, 1]]
-        # out_matrix = numpy.dot(in_matrix, scale_matrix)
         out_matrix = numpy.dot(scale_matrix, in_matrix)
         return out_matrix

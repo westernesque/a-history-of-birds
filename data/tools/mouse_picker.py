@@ -46,7 +46,6 @@ class MousePicker:
         x = (2.0 * mouse_x) / self.display.get_width() - 1.0
         y = (2.0 * mouse_y) / self.display.get_height() - 1.0
         return (x, y)
-        # return (-x, -y)
 
     def intersect_with_y(self):
         a = self.camera.position[0]
@@ -63,5 +62,4 @@ class MousePicker:
         else:
             y = 0.0
         z = c - (gamma * b) / beta
-        # inverted_coordinates = numpy.linalg.inv([x, y, z])
         return (x, y, z)

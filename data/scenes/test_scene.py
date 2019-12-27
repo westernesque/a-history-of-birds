@@ -114,7 +114,7 @@ def test_scene(screen, obj_list):
 		### 2.) see about reducing the amount of time numpy.dot takes?
 		### 3.) look into high CPU usage for numpy in general.
 		####
-	camera = tpc.third_person_camera(player)
+	camera = tpc.ThirdPersonCamera(player)
 
 	func_status = "incomplete"
 	next_func = None

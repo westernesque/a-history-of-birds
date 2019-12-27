@@ -71,7 +71,7 @@ if __name__ == "__main__":
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
 	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("tree_texture")))
 	
-	textured_bush.get_texture().set_has_transparency(False)
+	textured_bush.get_texture().set_has_transparency(True)
 	textured_bush.get_texture().set_use_fake_lighting(False)
 	textured_bush.get_texture().set_shine_damper(5.0)
 	textured_bush.get_texture().set_reflectivity(10.0)
@@ -111,19 +111,19 @@ if __name__ == "__main__":
 	text_textured_model = tm.textured_model(text_model, text_texture)
 	text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
 	
-	# for i in range(100):
-	# 	x = random.uniform(0.0, 800.0)
-	# 	t_x = random.uniform(0.0, 800.0)
-	# 	z = random.uniform(0.0, 800.0)
-	# 	t_z = random.uniform(0.0, 800.0)
-	# 	rand_y = random.uniform(0.0, 100.0)
-	# 	y = terrain.get_terrain_height(x, z)
-	# 	t_y = terrain.get_terrain_height(t_x, t_z)
-	# 	rx = random.uniform(0.0, 180)
-	# 	ry = random.uniform(0.0, 180)
-	# 	entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
-	# 	bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
-	# 	texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
+	for i in range(100):
+		x = random.uniform(0.0, 800.0)
+		t_x = random.uniform(0.0, 800.0)
+		z = random.uniform(0.0, 800.0)
+		t_z = random.uniform(0.0, 800.0)
+		rand_y = random.uniform(0.0, 100.0)
+		y = terrain.get_terrain_height(x, z)
+		t_y = terrain.get_terrain_height(t_x, t_z)
+		rx = random.uniform(0.0, 180)
+		ry = random.uniform(0.0, 180)
+		entity_list.append(e.entity(textured_cube, (x, rand_y, z), rx, ry, 0, 1))
+		bush_list.append(e.entity(textured_bush, (t_x, t_y, t_z), 0, 0, 0, 1))
+		texture_atlus_test_list.append(e.entity(texture_atlas_test_fern, (x, y, z), 0, 0, 0, 1, random.randint(0,3)))
 	
 	lamp_test_y_1 = terrain.get_terrain_height(400.0, 400.0)
 	#print "terrain height for lamp_test_y_1: " + str(lamp_test_y_1)
@@ -134,13 +134,13 @@ if __name__ == "__main__":
 	lamp_list.append(e.entity(textured_lamp, (370.0, lamp_test_y_2, 300.0), 0, 0, 0, 1))	
 	lamp_list.append(e.entity(textured_lamp, (293.0, lamp_test_y_3, 305.0), 0, 0, 0, 1))	
 	
-	light = li.light((0, 1000, -7000), (0.4, 0.4, 0.4))
+	light = li.light((0, 1000, -1000), (0.4, 0.4, 0.4))
 	lights.append(light)
 	lights.append(li.light((400.0, lamp_test_y_1 + 15.0, 400.0), (2.0, 0.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((370.0, lamp_test_y_2 + 15.0, 300.0), (0.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
 	lights.append(li.light((293.0, lamp_test_y_3 + 15.0, 305.0), (2.0, 2.0, 0.0), (1.0, 0.01, 0.002)))
 	
-	camera = tpc.third_person_camera(player)
+	camera = tpc.ThirdPersonCamera(player)
 	
 	mouse_picker = mp.MousePicker(camera, renderer.get_projection_matrix(), display.screen, terrain)
 	

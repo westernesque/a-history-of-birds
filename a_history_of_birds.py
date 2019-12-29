@@ -27,15 +27,6 @@ if __name__ == "__main__":
 	loader = l.Loader()
 	renderer = mr.MasterRenderer(display.screen, loader)
 	
-	'''
-	PERFORMANCE CHECKS... 
-	1.) verify that fps of pygame is accurate. 
-	2.) see about reducing the amount of time numpy.dot takes? <<-- 
-	3.) look into high CPU usage for numpy in general.
-	4.) create a new scene_manager & state_manager
-	5.) maybe have an object_list to hold the lists? // dictionary duh
-	'''
-	
 	guis = []
 	entity_list = []
 	waypoint_list = []
@@ -65,8 +56,7 @@ if __name__ == "__main__":
 	textured_waypoint_cube = tm.textured_model(waypoint_cube_model, mt.model_texture(loader.load_texture("hmm")))
 	textured_waypoint_cube.get_texture().set_has_transparency(False)
 	waypoint_list.append(e.entity(textured_waypoint_cube, (0.0, 400.0, 0.0), 0.0, 0.0, 0.0, 100.0))
-	
-	
+
 	bush = o.obj_file_loader().load_obj("data\\models\\res\\pine.obj")
 	bush_model = loader.load_to_vao(bush.get_vertices(), bush.get_texture_coordinates(), bush.get_normals(), bush.get_indices())
 	textured_bush = tm.textured_model(bush_model, mt.model_texture(loader.load_texture("tree_texture")))
@@ -105,11 +95,11 @@ if __name__ == "__main__":
 	textured_lamp = tm.textured_model(lamp_model, mt.model_texture(loader.load_texture("lamp")))
 	textured_lamp.get_texture().set_use_fake_lighting(True)
 
-	# text = font.font_texture("windfishers")
-	# text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
-	# text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
-	# text_textured_model = tm.textured_model(text_model, text_texture)
-	# text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
+	text = font.font_texture("windfishers")
+	text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
+	text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
+	text_textured_model = tm.textured_model(text_model, text_texture)
+	text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
 	
 	for i in range(100):
 		x = random.uniform(0.0, 800.0)
@@ -143,7 +133,7 @@ if __name__ == "__main__":
 	
 	mouse_picker = mp.MousePicker(camera, renderer.get_projection_matrix(), display.screen, terrain)
 	
-	while gameRunning == True:
+	while gameRunning:
 		clock.tick(60)
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
 		player.move(display, terrain)

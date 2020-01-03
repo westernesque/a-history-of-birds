@@ -1,7 +1,7 @@
 import data.shaders.shader_program as sp
 import data.tools.maths as m
 
-class static_shader(sp.shader_program):
+class static_shader(sp.ShaderProgram):
 	MAX_LIGHTS = 4
 	VERTEX_FILE = "data\\shaders\\vertex_shader.txt"
 	FRAGMENT_FILE = "data\\shaders\\fragment_shader.txt"

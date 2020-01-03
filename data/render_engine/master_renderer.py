@@ -24,7 +24,7 @@ class MasterRenderer:
 	def __init__(self, display, loader):
 		self.enable_culling()
 		self.entity_shader = ss.static_shader()
-		self.terrain_shader = ts.terrain_shader()
+		self.terrain_shader = ts.TerrainShader()
 		self.projection_matrix = self.create_projection_matrix(display)
 		self.entity_renderer = er.EntityRenderer(self.entity_shader, display, self.projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, self.projection_matrix)

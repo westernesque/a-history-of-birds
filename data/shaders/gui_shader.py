@@ -1,7 +1,7 @@
 import data.shaders.shader_program as sp
 import data.tools.maths as m
 
-class gui_shader(sp.shader_program):
+class gui_shader(sp.ShaderProgram):
 	VERTEX_FILE = "data\\shaders\\gui_vertex_shader.txt"
 	FRAGMENT_FILE = "data\\shaders\\gui_fragment_shader.txt"
 	def __init__(self):

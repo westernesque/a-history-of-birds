@@ -2,7 +2,7 @@ import data.shaders.shader_program as sp
 import data.tools.maths as m
 import numpy
 
-class skybox_shader(sp.shader_program):
+class skybox_shader(sp.ShaderProgram):
 	VERTEX_FILE = "data\\shaders\\skybox_vertex_shader.txt"
 	FRAGMENT_FILE = "data\\shaders\\skybox_fragment_shader.txt"
 	ROTATION_SPEED = 1.0

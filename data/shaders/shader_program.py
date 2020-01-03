@@ -2,7 +2,8 @@ from abc import ABCMeta, abstractmethod
 from OpenGL.GL import *
 import numpy
 
-class shader_program(object):
+
+class ShaderProgram(object):
 	__metaclass__ = ABCMeta
 	def __init__(self, vertex_file, fragment_file):
 		self.vertex_shader_id = self.load_shader(vertex_file, GL_VERTEX_SHADER)

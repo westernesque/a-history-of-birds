@@ -1,9 +1,8 @@
 from OpenGL.GL import *
 import data.tools.maths as m
-import pygame
 
 
-class entity_renderer():
+class EntityRenderer:
     def __init__(self, shader, display, projection_matrix):
         self.shader = shader
         self.shader.start()

@@ -15,8 +15,6 @@ uniform float shine_damper;
 uniform float reflectivity;
 uniform vec3 sky_color;
 
-uniform vec2 pixels;
-
 const float levels = 3.0;
 
 const float pixel_x = 5.0;
@@ -53,7 +51,7 @@ void main(void){
 		total_specular = total_specular + (damped_factor * reflectivity * light_color[i]) / attenuation_factor;
 	}
 	total_diffuse = max(total_diffuse, 0.2);
-	
+
 	vec4 texture_color = texture(texture_sampler, pass_texture_coords);
 	if(texture_color.a < 0.5){
 		discard;

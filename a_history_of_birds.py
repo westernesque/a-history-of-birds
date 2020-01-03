@@ -94,12 +94,6 @@ if __name__ == "__main__":
 	lamp_model = loader.load_to_vao(lamp.get_vertices(), lamp.get_texture_coordinates(), lamp.get_normals(), lamp.get_indices())
 	textured_lamp = tm.textured_model(lamp_model, mt.model_texture(loader.load_texture("lamp")))
 	textured_lamp.get_texture().set_use_fake_lighting(True)
-
-	text = font.font_texture("windfishers")
-	text_model = loader.load_to_vao(text_vertices, text_texture_coords, text_indices)
-	text_texture = mt.model_texture(loader.load_pygame_texture(text[0], text[1], text[2]))
-	text_textured_model = tm.textured_model(text_model, text_texture)
-	text_entity = e.entity(text_textured_model, (0, 0, 0), 0, 0, 0, 0.5)
 	
 	for i in range(100):
 		x = random.uniform(0.0, 800.0)

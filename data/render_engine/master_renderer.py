@@ -26,7 +26,7 @@ class MasterRenderer:
 		self.entity_shader = ss.static_shader()
 		self.terrain_shader = ts.terrain_shader()
 		self.projection_matrix = self.create_projection_matrix(display)
-		self.entity_renderer = er.entity_renderer(self.entity_shader, display, self.projection_matrix)
+		self.entity_renderer = er.EntityRenderer(self.entity_shader, display, self.projection_matrix)
 		self.terrain_renderer = tr.terrain_renderer(self.terrain_shader, display, self.projection_matrix)
 		self.skybox_renderer = sr.skybox_renderer(loader, self.projection_matrix)
 	def render(self, lights, camera, clock):

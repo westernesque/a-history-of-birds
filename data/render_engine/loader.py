@@ -17,11 +17,16 @@ class Loader:
             self.store_data_in_attribute_list(2, 3, args[2])
             self.unbind_vao()
             return rm.raw_model(vao_id, len(args[3]))
-        if len(args) == 2:
+        elif len(args) == 2 and type(args[1]) is int:
             vao_id = self.create_vao()
             self.store_data_in_attribute_list(0, args[1], args[0])
             self.unbind_vao()
             return rm.raw_model(vao_id, len(args[0]) / args[1])
+        elif len(args) == 2 and type(args[1])is float:
+            vao_id = self.create_vao()
+            self.store_data_in_attribute_list(0, 2, args[0])
+            self.store_data_in_attribute_list(1, 2, args[1])
+            return vao_id
 
     def load_cube_map(self, texture_files):
         texture_id = glGenTextures(1)

@@ -4,14 +4,17 @@ import data.fonts.font_renderer
 class TextMaster:
     def __init__(self, loader):
         self.renderer = data.fonts.font_renderer.FontRenderer()
-        self.loader = loader.Loader()
+        self.loader = loader
         self.texts = {}
+
+    def render(self):
+        self.renderer.render(self.texts)
 
     def load_text(self, text):
         font = text.get_font()
         data = font.load_text(text)
         vao = self.loader.load_to_vao(data.get_vertex_positions(), data.get_texture_coordinates())
-        text.set_mesh_info(vao, data.get_vertext_count())
+        text.set_mesh_info(vao, data.get_vertex_count())
         text_batch = list(self.texts.get(font))
         if len(text_batch) is 0:
             text_batch = {}

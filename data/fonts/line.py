@@ -1,5 +1,6 @@
 class Line:
     def __init__(self, space_width, font_size, max_length):
+        # print(type(space_width))
         self.space_size = space_width * font_size
         self.max_length = max_length
         self.words = []

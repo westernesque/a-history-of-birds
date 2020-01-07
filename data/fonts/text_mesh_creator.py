@@ -3,9 +3,10 @@ import data.fonts.meta_file, data.fonts.line, data.fonts.word, data.fonts.text_m
 
 class TextMeshCreator:
     def __init__(self, meta_file):
-        self.meta_data = data.fonts.meta_file.MetaFile(meta_file)
         self.LINE_HEIGHT = 0.03
         self.SPACE_ASCII = 32
+        self.meta_data = data.fonts.meta_file.MetaFile(meta_file, self)
+        print(self.meta_data)
 
     def create_text_mesh(self, text):
         lines = self.create_structure(text)
@@ -13,13 +14,13 @@ class TextMeshCreator:
         return data
 
     def create_structure(self, text):
-        chars = []
+        chars = list(text.get_text_string())
         lines = []
         current_line = data.fonts.line.Line(self.meta_data.get_space_width(), text.get_font_size(), text.get_max_line_size())
         current_word = data.fonts.word.Word(text.get_font_size())
-        chars.append(text.get_text_string())
+        # chars.append(text.get_text_string())
         for char in chars:
-            ascii = char
+            ascii = ord(char)
             if ascii == self.SPACE_ASCII:
                 added = current_line.attempt_to_add_word(current_word)
                 if not added:
@@ -29,6 +30,7 @@ class TextMeshCreator:
                 current_word = data.fonts.word.Word(text.get_font_size())
                 continue
             character = self.meta_data.get_character(ascii)
+            # print(character)
             current_word.add_character(character)
         self.complete_structure(lines, current_line, current_word, text)
         return lines
@@ -42,7 +44,8 @@ class TextMeshCreator:
         lines.append(current_line)
 
     def create_quad_vertices(self, text, lines):
-        text.set_number_of_lines(len(lines.size))
+        text.set_number_of_lines(len(lines))
+        # text.set_number_of_lines(len(lines.size))
         cursor_x = 0
         cursor_y = 0
         vertices = []
@@ -53,7 +56,7 @@ class TextMeshCreator:
             for word in line.get_words():
                 for letter in word.get_characters():
                     self.add_vertices_for_character(cursor_x, cursor_y, letter, text.get_font_size(), vertices)
-                    self.add_texture_coordinates(texture_coordinates, letter.get_x_texture_coordinates(), letter.get_y_texture_coordinates, letter.get_x_max_texture_coordinate(), letter.get_y_max_texture_coordinate())
+                    self.add_texture_coordinates(texture_coordinates, letter.get_x_texture_coordinate(), letter.get_y_texture_coordinate(), letter.get_x_max_texture_coordinate(), letter.get_y_max_texture_coordinate())
                     cursor_x += letter.get_x_advance() * text.get_font_size()
                 cursor_x += self.meta_data.get_space_width() * text.get_font_size()
             cursor_x = 0

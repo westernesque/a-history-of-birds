@@ -1,4 +1,4 @@
-class TestMeshData:
+class TextMeshData:
     def __init__(self, vertex_positions, texture_coordinates):
         self.vertex_positions = vertex_positions
         self.texture_coordinates = texture_coordinates

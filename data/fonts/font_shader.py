@@ -12,10 +12,11 @@ class FontShader(data.shaders.shader_program.ShaderProgram):
         super(FontShader, self).__init__(self.VERTEX_FILE, self.FRAGMENT_FILE)
 
     def get_all_uniform_locations(self):
-        self.location_color = super(FontShader, self).get_uniform_location("color")
-        self.location_translation = super(FontShader, self).get_uniform_location("translation")
+        # self.location_color = super(FontShader, self).get_uniform_location("color")
+        # self.location_translation = super(FontShader, self).get_uniform_location("translation")
+        pass
 
-    def bind_attributes(self):
+    def bind_all_attributes(self):
         super(FontShader, self).bind_attribute(0, "position")
         super(FontShader, self).bind_attribute(1, "texture_coords")
 

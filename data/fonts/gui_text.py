@@ -2,7 +2,7 @@ import data.fonts.text_master
 
 
 class GuiText:
-    def __init__(self, text, font_size, font, position, max_line_length, centered):
+    def __init__(self, text, font_size, font, position, max_line_length, centered, loader):
         self.text_string = text
         self.font_size = font_size
         self.font = font
@@ -13,7 +13,7 @@ class GuiText:
         self.number_of_lines = 1
         self.text_mesh_vao = None
         self.vertex_count = 0
-        self.loaded_text = data.fonts.text_master.TextMaster()
+        self.loaded_text = data.fonts.text_master.TextMaster(loader)
         self.loaded_text.load_text(self)
 
     def remove(self):

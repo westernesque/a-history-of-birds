@@ -4,6 +4,9 @@ import data.render_engine.loader as l
 import data.render_engine.master_renderer as mr
 import data.render_engine.light as li
 import data.obj_loader.obj_file_loader as o
+import data.fonts.text_master as txm
+import data.fonts.font_type as f
+import data.fonts.gui_text as g
 import data.render_engine.camera as c
 import data.render_engine.third_person_camera as tpc
 #import data.shaders.static_shader as ss
@@ -26,6 +29,7 @@ if __name__ == "__main__":
 	# numpy.show_config()
 	loader = l.Loader()
 	renderer = mr.MasterRenderer(display.screen, loader)
+	text_renderer = txm.TextMaster(loader)
 	
 	guis = []
 	entity_list = []
@@ -34,7 +38,10 @@ if __name__ == "__main__":
 	texture_atlus_test_list = []
 	lights = []
 	lamp_list = []
-	
+
+	font = f.FontType(loader.load_texture("times_new_roman"), "data\\textures\\res\\times_new_roman.fnt")
+	text = g.GuiText("HELLOWORLD!", 1, font, (0.0, 0.0), 0.5, False, loader)
+
 	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
 	gui_two = gt.gui_texture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
 	guis.append(gui_one)
@@ -148,6 +155,7 @@ if __name__ == "__main__":
 			renderer.process_entity(fern)
 		renderer.render(lights, camera, clock)
 		gui_renderer.render(guis)
+		text_renderer.render()
 		display.update_display()
 		mouse_keys = pygame.mouse.get_pressed()
 		keys = pygame.key.get_pressed()
@@ -168,6 +176,7 @@ if __name__ == "__main__":
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
 				camera.position = lamp_list[0].position
 			if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+				text_renderer.clean_up()
 				gui_renderer.clean_up()
 				renderer.clean_up()
 				loader.clean_up()

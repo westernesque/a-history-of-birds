@@ -30,7 +30,7 @@ class FontRenderer:
         glEnableVertexAttribArray(1)
         self.shader.load_color(text.get_color())
         self.shader.load_translation(text.get_position())
-        glDrawArrays(GL_TRIANGLES, 0, text.get_vertex_count())
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, int(text.get_vertex_count()))
         glDisableVertexAttribArray(0)
         glDisableVertexAttribArray(1)
         glBindVertexArray(0)

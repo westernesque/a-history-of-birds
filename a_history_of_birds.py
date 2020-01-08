@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	loader = l.Loader()
 	renderer = mr.MasterRenderer(display.screen, loader)
 	text_renderer = txm.TextMaster(loader)
-	
+
 	guis = []
 	entity_list = []
 	waypoint_list = []
@@ -40,13 +40,14 @@ if __name__ == "__main__":
 	lamp_list = []
 
 	font = f.FontType(loader.load_texture("times_new_roman"), "data\\textures\\res\\times_new_roman.fnt")
-	text = g.GuiText("HELLOWORLD!", 1, font, (0.0, 0.0), 0.5, False, loader)
+	text = g.GuiText("HELLO WORLD!", 1, font, (0.0, 0.0), 0.5, True, loader)
+	text.set_text_color(1, 1, 1)
 
-	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
-	gui_two = gt.gui_texture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
+	gui_one = gt.GuiTexture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
+	gui_two = gt.GuiTexture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
 	guis.append(gui_one)
 	guis.append(gui_two)
-	gui_renderer = gr.gui_renderer(loader)
+	gui_renderer = gr.GuiRenderer(loader)
 
 	text_vertices = numpy.array([-1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0], dtype="float32")
 	text_indices = numpy.array([0, 1, 3, 3, 1, 2], dtype="float32")
@@ -159,14 +160,7 @@ if __name__ == "__main__":
 		display.update_display()
 		mouse_keys = pygame.mouse.get_pressed()
 		keys = pygame.key.get_pressed()
-		if mouse_keys[0] == True: 
-			#print "terrain_point point: " + str(terrain_point)
-			print("mouse current_ray: " + str(mouse_picker.current_ray))
-			print("plane intersection test: " + str(mouse_picker.intersect_with_y()))
-			print("lamp position: " + str(lamp_list[0].position))
-			#print("camera position: " + str(camera.position) + "\n")
-			#print("waypoint position" + str(waypoint_list[0].position) + "\n")
-			#print "get_point_on_ray: " + str(mouse_picker.start + mouse_picker.scaled_ray)
+		if mouse_keys[0] == True:
 			#if numpy.all(terrain_point) != None:
 			#waypoint_list[0].set_position(mouse_picker.intersect_with_y())
 			lamp_list[0].set_position(mouse_picker.intersect_with_y())

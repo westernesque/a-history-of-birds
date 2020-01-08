@@ -12,12 +12,17 @@ class TextMaster:
 
     def load_text(self, text):
         font = text.get_font()
+        print(font)
         data = font.load_text(text)
+        print(data)
         vao = self.loader.load_to_vao(data.get_vertex_positions(), data.get_texture_coordinates())
         text.set_mesh_info(vao, data.get_vertex_count())
-        text_batch = list(self.texts.get(font))
-        if len(text_batch) is 0:
-            text_batch = {}
+        text_batch = self.texts.get(font)
+        print(text_batch)
+        # text_batch = list(self.texts.get(font))
+        if text_batch is None:
+        # if len(text_batch) is 0:
+            text_batch = []
             self.texts[font] = text_batch
         text_batch.append(text)
 

@@ -6,7 +6,6 @@ class TextMeshCreator:
         self.LINE_HEIGHT = 0.03
         self.SPACE_ASCII = 32
         self.meta_data = data.fonts.meta_file.MetaFile(meta_file, self)
-        print(self.meta_data)
 
     def create_text_mesh(self, text):
         lines = self.create_structure(text)
@@ -30,7 +29,6 @@ class TextMeshCreator:
                 current_word = data.fonts.word.Word(text.get_font_size())
                 continue
             character = self.meta_data.get_character(ascii)
-            # print(character)
             current_word.add_character(character)
         self.complete_structure(lines, current_line, current_word, text)
         return lines
@@ -45,7 +43,6 @@ class TextMeshCreator:
 
     def create_quad_vertices(self, text, lines):
         text.set_number_of_lines(len(lines))
-        # text.set_number_of_lines(len(lines.size))
         cursor_x = 0
         cursor_y = 0
         vertices = []

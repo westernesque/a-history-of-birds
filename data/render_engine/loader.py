@@ -18,6 +18,7 @@ class Loader:
             self.unbind_vao()
             return rm.raw_model(vao_id, len(args[3]))
         elif len(args) == 2 and type(args[1]) is int:
+            print("len(args) is 2, arg[1] is int.")
             vao_id = self.create_vao()
             self.store_data_in_attribute_list(0, args[1], args[0])
             self.unbind_vao()

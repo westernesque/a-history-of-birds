@@ -43,7 +43,6 @@ class MetaFile:
     def process_next_line(self): # check if this is right
         self.values.clear()
         line = self.file.readline().strip()
-        # print("line:\n" + line + "-- test")
         if len(line) is 0:
             return False
         if line is not None:
@@ -54,7 +53,6 @@ class MetaFile:
             return True
 
     def get_value_of_variable(self, variable):
-        # print("values: \n" + str(self.values))
         return self.values[variable]
 
     def get_values_of_variable(self, variable):

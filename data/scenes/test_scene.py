@@ -19,11 +19,11 @@ import data.render_engine.third_person_camera as tpc
 
 def test_scene(screen, obj_list):	
 	guis = []
-	gui_one = gt.gui_texture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
-	gui_two = gt.gui_texture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
+	gui_one = gt.GuiTexture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
+	gui_two = gt.GuiTexture(loader.load_texture("chicken"), (0.0, 0.0), (0.25, 0.25))
 	guis.append(gui_one)
 	guis.append(gui_two)
-	gui_renderer = gr.gui_renderer(loader)
+	gui_renderer = gr.GuiRenderer(loader)
 	
 	
 	cube = o.obj_file_loader().load_obj("data\\models\\res\\cube.obj")

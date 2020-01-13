@@ -18,13 +18,13 @@ class Loader:
             self.unbind_vao()
             return rm.raw_model(vao_id, len(args[3]))
         elif len(args) == 2 and type(args[1]) is int:
-            print("len(args) is 2, arg[1] is int.")
             vao_id = self.create_vao()
             self.store_data_in_attribute_list(0, args[1], args[0])
             self.unbind_vao()
             return rm.raw_model(vao_id, len(args[0]) / args[1])
-        elif len(args) == 2 and type(args[1])is float:
+        elif len(args) == 2 and type(args[1]) is list: # somewhere in here is the issue!!
             vao_id = self.create_vao()
+            print("font loaded (loader class)")
             self.store_data_in_attribute_list(0, 2, args[0])
             self.store_data_in_attribute_list(1, 2, args[1])
             return vao_id
@@ -79,7 +79,7 @@ class Loader:
         self.vbos.append(numpy.array(vbo_id))
         glBindBuffer(GL_ARRAY_BUFFER, vbo_id)
         buffer = self.store_data_in_float_buffer(data)
-        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW)
+        glBufferData(GL_ARRAY_BUFFER, numpy.array(buffer), GL_STATIC_DRAW)
         glVertexAttribPointer(attribute_number, coordinate_size, GL_FLOAT, False, 0, None)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 

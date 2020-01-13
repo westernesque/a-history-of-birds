@@ -1,4 +1,4 @@
-import pygame, numpy, random
+import pygame, numpy, random, sys
 import data.render_engine.display_manager as display
 import data.render_engine.loader as l
 import data.render_engine.master_renderer as mr
@@ -11,6 +11,8 @@ import data.render_engine.camera as c
 import data.render_engine.third_person_camera as tpc
 #import data.shaders.static_shader as ss
 import data.tools.font as font
+from OpenGL.GL import *
+from OpenGL.GLU import *
 import data.tools.mouse_picker as mp
 import data.textures.model_texture as mt
 import data.models.textured_model as tm
@@ -21,6 +23,14 @@ import data.entities.entity as e
 import data.entities.player as p
 import data.guis.gui_texture as gt
 import data.guis.gui_renderer as gr
+
+
+def __checkOpenGLError():
+	"""Print OpenGL error message."""
+	err = glGetError()
+	if err != GL_NO_ERROR:
+		print('GLERROR: ', gluErrorString(err))
+		sys.exit()
 
 if __name__ == "__main__":
 	gameRunning = True
@@ -39,8 +49,8 @@ if __name__ == "__main__":
 	lights = []
 	lamp_list = []
 
-	font = f.FontType(loader.load_texture("times_new_roman"), "data\\textures\\res\\times_new_roman.fnt")
-	text = g.GuiText("HELLO WORLD!", 1, font, (0.0, 0.0), 0.5, True, loader)
+	font = f.FontType(loader.load_texture("times_new_roman")[0], "data\\textures\\res\\times_new_roman.fnt")
+	text = g.GuiText("HELLO WORLD!", 1, font, (0.0, 0.0), 0.5, True, loader, text_renderer)
 	text.set_text_color(1, 1, 1)
 
 	gui_one = gt.GuiTexture(loader.load_texture("chicken"), (0.5, 0.5), (0.5, 0.5))
@@ -137,6 +147,7 @@ if __name__ == "__main__":
 	
 	while gameRunning:
 		clock.tick(60)
+		__checkOpenGLError()
 		pygame.display.set_caption("a history of birds " + "fps: " + str(clock.get_fps()))
 		player.move(display, terrain)
 		camera.move()
@@ -156,7 +167,9 @@ if __name__ == "__main__":
 			renderer.process_entity(fern)
 		renderer.render(lights, camera, clock)
 		gui_renderer.render(guis)
+		__checkOpenGLError()
 		text_renderer.render()
+		__checkOpenGLError()
 		display.update_display()
 		mouse_keys = pygame.mouse.get_pressed()
 		keys = pygame.key.get_pressed()
